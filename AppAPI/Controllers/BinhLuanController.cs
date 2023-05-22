@@ -1,6 +1,7 @@
-﻿using AppData.IRepositories;
-using AppData.Models;
-using AppData.Repositories;
+﻿
+using AppDaTa.IRepositories;
+using AppDaTa.Models;
+using AppDaTa.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,11 +13,11 @@ namespace AppAPI.Controllers
     public class BinhLuanController : ControllerBase
     {
         private IAllRepositories<BinhLuan> irepos;
-        private Du_An_NET105Context context= new Du_An_NET105Context();
+        private QLBG_Context context = new QLBG_Context();
         public BinhLuanController()
         {
             AllRepositories<BinhLuan> repos =
-            new AllRepositories<BinhLuan>(context, context.BinhLuans);
+            new AllRepositories<BinhLuan>(context, context.binhLuans);
             irepos = repos;
         }
         // GET: api/<BinhLuan>
@@ -30,7 +31,7 @@ namespace AppAPI.Controllers
         [HttpGet("{id}")]
         public BinhLuan Get(Guid id)
         {
-            return irepos.GetAll().First(p => p.IdbinhLuan == id);
+            return irepos.GetAll().First(p => p.IDBinhLuan == id);
         }
 
         // POST api/<BinhLuan>
@@ -39,11 +40,11 @@ namespace AppAPI.Controllers
         {
             BinhLuan BL = new BinhLuan();
             BL.NoiDung = noidung;
-            BL.IdbinhLuan= Guid.NewGuid();
-            BL.Idspct= Guid.NewGuid();
-            BL.IdnguoiDung= Guid.NewGuid();
+            BL.IDBinhLuan= Guid.NewGuid();
+            //BL.Idspct= Guid.NewGuid();
+            //BL.IdnguoiDung= Guid.NewGuid();
           
-            return irepos.CreateItem(BL);
+            return irepos.CreateNewItem(BL);
         }
         [HttpPut]
         [Route("edit-mausac")]
@@ -51,11 +52,11 @@ namespace AppAPI.Controllers
         {
             // Trỏ đến màu sắc trong db để sửa
             
-            BinhLuan BL = irepos.GetAll().First(p => p.IdbinhLuan == id);
+            BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == id);
             BL.NoiDung = noidung;
-            BL.IdbinhLuan = Guid.NewGuid();
-            BL.Idspct = Guid.NewGuid();
-            BL.IdnguoiDung = Guid.NewGuid();
+            BL.IDBinhLuan = Guid.NewGuid();
+            //BL.Idspct = Guid.NewGuid();
+            //BL.IdnguoiDung = Guid.NewGuid();
            
             return irepos.UpdateItem(BL);
         }
@@ -63,7 +64,7 @@ namespace AppAPI.Controllers
         public bool DeleteColor(Guid id)
         {
             // Trỏ đến màu sắc trong db để sửa
-            BinhLuan BL = irepos.GetAll().First(p => p.IdbinhLuan == id);
+            BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == id);
             return irepos.DeleteItem(BL);
         }
 

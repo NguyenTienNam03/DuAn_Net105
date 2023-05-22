@@ -1,6 +1,7 @@
-﻿using AppData.IRepositories;
-using AppData.Models;
-using AppData.Repositories;
+﻿
+using AppDaTa.IRepositories;
+using AppDaTa.Models;
+using AppDaTa.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppAPI.Controllers
@@ -11,25 +12,25 @@ namespace AppAPI.Controllers
         public class UserController : ControllerBase
         {
             private IAllRepositories<NguoiDung> irepos;
-            private Du_An_NET105Context context = new Du_An_NET105Context();
+            private QLBG_Context context = new QLBG_Context();
             public UserController()
             {
-                AllRepositories<NguoiDung> repos = new AllRepositories<NguoiDung>(context, context.NguoiDungs);
+                AllRepositories<NguoiDung> repos = new AllRepositories<NguoiDung>(context, context.nguoiDungs);
               irepos=repos;
             }
             // GET: api/<ValuesController>
             [HttpGet]
-            public IEnumerable<NguoiDung> Get()
+            public IEnumerable<NguoiDung> GetAll()
             {
                 return irepos.GetAll();
             }
 
             // GET api/<ValuesController>/5
-            [HttpGet("{id}")]
-            public NguoiDung Get(Guid id)
-            {
-                return irepos.GetAll().First(p => p.Iduser == id);
-            }
+            //[HttpGet("{id}")]
+            //public bool NguoiDung Get(Guid id)
+            //{
+            //    return irepos.GetAll().First(p => p.Iduser == id);
+            //}
 
             // POST api/<ValuesController>
             [HttpPost("create-người dùng")]
@@ -37,23 +38,23 @@ namespace AppAPI.Controllers
             {
                 NguoiDung user = new NguoiDung();
                 user.TenKhachHang = Tkh;
-                user.Sdt = sdt;
+                user.SDT = sdt;
                 user.MatKhau = matkhau;
                 user.Email = email; 
                 user.TrangThai = trangthai;
                 user.DiaChi = diachi;
-                user.Iduser = Guid.NewGuid();
-                user.Idrole= Guid.NewGuid();
-                return irepos.CreateItem(user);
+                user.IDUser = Guid.NewGuid();
+                //user.IDRole=;
+                return irepos.CreateNewItem(user);
             }
 
             // PUT api/<ValuesController>/5
             [HttpPut("{Update_user}")]
             public bool UpdateUser(Guid id, string Tkh, string sdt, string email, string matkhau, string diachi, int trangthai)
             {
-                NguoiDung user = irepos.GetAll().First(p => p.Iduser == id);
+                NguoiDung user = irepos.GetAll().First(p => p.IDUser == id);
                 user.TenKhachHang = Tkh;
-                user.Sdt = sdt;
+                user.SDT = sdt;
                 user.MatKhau = matkhau;
                 user.Email = email;
                 user.TrangThai = trangthai;
@@ -65,7 +66,7 @@ namespace AppAPI.Controllers
             [HttpDelete("{delete}")]
             public bool DeleteUser(Guid id)
             {
-                NguoiDung user = irepos.GetAll().First(p => p.Iduser == id);
+                NguoiDung user = irepos.GetAll().First(p => p.IDUser == id);
                 return irepos.DeleteItem(user);
             }
         }

@@ -12,7 +12,7 @@ namespace AppDaTa.Models
         public Guid IDRole { get; set; }
         public string TenKhachHang { get; set; }
         public string SDT { get; set; }
-        public int Email { get; set; }
+        public string Email { get; set; }
         public string MatKhau { get; set; }
         public string DiaChi { get; set; }
         public int TrangThai { get; set; }
