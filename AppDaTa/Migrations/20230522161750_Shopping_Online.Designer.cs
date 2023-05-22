@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDaTa.Migrations
 {
     [DbContext(typeof(QLBG_Context))]
-    [Migration("20230519153424_ShoppingOnline")]
-    partial class ShoppingOnline
+    [Migration("20230522161750_Shopping_Online")]
+    partial class Shopping_Online
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

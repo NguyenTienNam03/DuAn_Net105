@@ -16,8 +16,7 @@ namespace AppAPI.Controllers
         private QLBG_Context context = new QLBG_Context();
         public BinhLuanController()
         {
-            AllRepositories<BinhLuan> repos =
-            new AllRepositories<BinhLuan>(context, context.binhLuans);
+            AllRepositories<BinhLuan> repos = new AllRepositories<BinhLuan>(context, context.binhLuans);
             irepos = repos;
         }
         // GET: api/<BinhLuan>
@@ -35,7 +34,7 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<BinhLuan>
-        [HttpPost("create-mausac")]
+        [HttpPost("create-binhluan")]
         public bool CreateBL(string noidung)
         {
             BinhLuan BL = new BinhLuan();
@@ -47,7 +46,7 @@ namespace AppAPI.Controllers
             return irepos.CreateNewItem(BL);
         }
         [HttpPut]
-        [Route("edit-mausac")]
+        [Route("edit-binhluan")]
         public bool UpdateColor(Guid id, string noidung )
         {
             // Trỏ đến màu sắc trong db để sửa

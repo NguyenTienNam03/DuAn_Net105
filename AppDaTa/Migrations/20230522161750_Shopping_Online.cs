@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDaTa.Migrations
 {
-    public partial class ShoppingOnline : Migration
+    public partial class Shopping_Online : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
