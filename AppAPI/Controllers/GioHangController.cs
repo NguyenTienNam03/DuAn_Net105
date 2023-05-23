@@ -40,7 +40,7 @@ namespace AppAPI.Controllers
         public bool CreateGioHang(Guid id, string description)
         {
             GioHang gioHang = new GioHang();
-            gioHang.IDGioHang = ireposuser.GetAll().First(c => c.IDUser == id); // lay id nguoi dung dang nhap
+            //gioHang.IDGioHang = ireposuser.GetAll().First(c => c.IDUser == id); // lay id nguoi dung dang nhap
             gioHang.Description = description;
             return ireposgiohang.CreateNewItem(gioHang);
         }
