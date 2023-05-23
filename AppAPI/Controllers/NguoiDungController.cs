@@ -9,12 +9,12 @@ namespace AppAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class UserController : ControllerBase
+    public class NguoiDungController : ControllerBase
     {
         private IAllRepositories<NguoiDung> ireposUser;
         private IAllRepositories<ChucVu> ireposRole;
         private QLBG_Context context = new QLBG_Context();
-        public UserController()
+        public NguoiDungController()
         {
             AllRepositories<NguoiDung> reposuser = new AllRepositories<NguoiDung>(context, context.nguoiDungs);
             AllRepositories<ChucVu> reposrole = new AllRepositories<ChucVu>(context, context.chucVus);
@@ -52,7 +52,7 @@ namespace AppAPI.Controllers
         }
 
         // PUT api/<ValuesController>/5
-        [HttpPut("{Update_user}")]
+        [HttpPut("Update_user")]
         public bool UpdateUser(Guid id, string Tkh, string sdt, string email, string matkhau, string diachi, int trangthai)
         {
             NguoiDung user = ireposUser.GetAll().First(p => p.IDUser == id);
@@ -66,7 +66,7 @@ namespace AppAPI.Controllers
         }
 
         // DELETE api/<ValuesController>/5
-        [HttpDelete("{delete-user}")]
+        [HttpDelete("delete-user")]
         public bool DeleteUser(Guid id)
         {
             NguoiDung user = ireposUser.GetAll().First(p => p.IDUser == id);
