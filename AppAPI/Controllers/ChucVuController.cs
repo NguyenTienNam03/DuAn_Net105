@@ -9,11 +9,11 @@ namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChucVuContoller : ControllerBase
+    public class ChucVuController : ControllerBase
     {
         private IAllRepositories<ChucVu> ireposchucvu;
         private QLBG_Context _context = new QLBG_Context();
-        public ChucVuContoller()
+        public ChucVuController()
         {
             AllRepositories<ChucVu> resposchucvu = new AllRepositories<ChucVu>(_context , _context.chucVus);
             ireposchucvu = resposchucvu;
@@ -34,24 +34,24 @@ namespace AppAPI.Controllers
 
         // POST api/<ChucVuContoller>
         [HttpPost("Create-chucvu")]
-        public bool CreateChucVu(ChucVu cv)
+        public bool CreateChucVu( string tencv , string mota , int trangthai)
         {
             ChucVu cvs = new ChucVu();
             cvs.IDRole = Guid.NewGuid();
-            cvs.TenChucVu = cv.TenChucVu;
-            cvs.MoTa = cv.MoTa;
-            cvs.TrangThai = cv.TrangThai;
+            cvs.TenChucVu = tencv;
+            cvs.MoTa = mota;
+            cvs.TrangThai = trangthai;
             return ireposchucvu.CreateNewItem(cvs);
         }
 
         // PUT api/<ChucVuContoller>/5
         [HttpPut("Update-chucvu")]
-        public bool UpdateChucVu(Guid id , ChucVu cv)
+        public bool UpdateChucVu(Guid ID, string tencv, string mota, int trangthai)
         {
-            ChucVu vcs = ireposchucvu.GetAll().First(c => c.IDRole==id);
-            vcs.TenChucVu=cv.TenChucVu;
-            vcs.MoTa = cv.MoTa;
-            vcs.TrangThai = cv.TrangThai;
+            ChucVu vcs = ireposchucvu.GetAll().First(c => c.IDRole==ID);
+            vcs.TenChucVu= tencv;
+            vcs.MoTa = mota;
+            vcs.TrangThai = trangthai;
             return ireposchucvu.UpdateItem(vcs);
         }
 

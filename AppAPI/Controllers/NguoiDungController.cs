@@ -37,7 +37,7 @@ namespace AppAPI.Controllers
 
         // POST api/<ValuesController>
         [HttpPost("create-user")]
-        public bool CreateUser(Guid idrole,Guid giohang,string Tkh, string sdt, string email, string matkhau, string diachi)
+        public bool CreateUser(Guid idrole,string Tkh, string sdt, string email, string matkhau, string diachi)
         {
             NguoiDung user = new NguoiDung();
             user.IDUser = Guid.NewGuid();
