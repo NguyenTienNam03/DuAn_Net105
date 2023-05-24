@@ -68,6 +68,7 @@ namespace AppAPI.Controllers
             GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDGHCT == id);
             return ireposGHCT.DeleteItem(ghct);
         }
+        // trân  trung đông
         //sasadasdsadcs
 
     }
