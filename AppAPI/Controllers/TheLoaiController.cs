@@ -28,12 +28,12 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<SaleController>
-        [HttpPost("create-theloai")]
-        public bool CreateTheLoai(string theloai, string mota)
+        [HttpPost]
+        public bool CreateTheLoai(string tentheloai, string mota)
         {
             TheLoai theLoai = new TheLoai();
-            theLoai.IDTheLoai = Guid.NewGuid();
-            theLoai.TenTheLoai = theloai;
+            theLoai.IDTheLoai = new Guid();
+            theLoai.TenTheLoai = tentheloai;
             theLoai.MoTa = mota;
             return irepostheloai.CreateNewItem(theLoai);
         }
