@@ -56,15 +56,13 @@ namespace AppAPI.Controllers
         }
         [HttpPut]
         [Route("edit-binhluan")]
-        public bool UpdateColor(Guid id, string noidung )
+        public bool UpdateBinhLuan(BinhLuan a )
         {
             // Trỏ đến màu sắc trong db để sửa
             
-            BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == id);
-            BL.NoiDung = noidung;
-            BL.IDBinhLuan = Guid.NewGuid();
-            BL.IDNguoiDung = ireposuser.GetAll().First(c => c.IDUser == IDuser).IDUser;
-            BL.IDSPCT = ireposspct.GetAll().First(c => c.IDSPCT == Idspct).IDSPCT;
+            BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == a.IDBinhLuan);
+
+            BL = a;
 
 
             return irepos.UpdateItem(BL);

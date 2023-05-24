@@ -2,6 +2,7 @@
 using AppDaTa.Models;
 using AppDaTa.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.NetworkInformation;
 
 namespace AppAPI.Controllers
 {
@@ -21,19 +22,19 @@ namespace AppAPI.Controllers
         {
             return _repos.GetAll();
         }
-        [HttpPost("Create-Voucher")]
+        [HttpPost]
         public bool CreateVoucher(Voucher a)
         {
             return _repos.CreateNewItem(a);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public bool DeleteVoucher(Guid Id)
         {
             Voucher b = _repos.GetAll().First(p => p.IDVoucher == Id);
             
             return _repos.DeleteItem(b);
         }
-        [HttpPut("Update-Voucher")]
+        [HttpPut]
         public  bool UpdateVoucher(Voucher a)
         {
             Voucher b = _repos.GetAll().First(p => p.IDVoucher == a.IDVoucher);

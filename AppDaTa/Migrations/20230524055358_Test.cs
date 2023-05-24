@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDaTa.Migrations
 {
-    public partial class Shopping_Online : Migration
+    public partial class Test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -151,7 +151,7 @@ namespace AppDaTa.Migrations
                     IDSP = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IDMau = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IDSize = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IDSale = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IDSale = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IDHang = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IDTheLoai = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GiaBan = table.Column<decimal>(type: "decimal", nullable: false),
@@ -180,8 +180,7 @@ namespace AppDaTa.Migrations
                         name: "FK_SanPhamChiTiet_Sale_IDSale",
                         column: x => x.IDSale,
                         principalTable: "Sale",
-                        principalColumn: "IDSale",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IDSale");
                     table.ForeignKey(
                         name: "FK_SanPhamChiTiet_SanPham_IDSP",
                         column: x => x.IDSP,

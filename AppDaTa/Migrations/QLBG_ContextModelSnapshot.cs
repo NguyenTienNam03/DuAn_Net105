@@ -331,7 +331,7 @@ namespace AppDaTa.Migrations
                     b.Property<Guid>("IDSP")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IDSale")
+                    b.Property<Guid?>("IDSale")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IDSize")
@@ -556,9 +556,7 @@ namespace AppDaTa.Migrations
 
                     b.HasOne("AppDaTa.Models.Sale", "Sale")
                         .WithMany("SanPhamCT")
-                        .HasForeignKey("IDSale")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IDSale");
 
                     b.HasOne("AppDaTa.Models.Size", "Size")
                         .WithMany("SanPhamct")

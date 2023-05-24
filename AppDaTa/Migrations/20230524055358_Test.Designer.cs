@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDaTa.Migrations
 {
     [DbContext(typeof(QLBG_Context))]
-    [Migration("20230522161750_Shopping_Online")]
-    partial class Shopping_Online
+    [Migration("20230524055358_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -333,7 +333,7 @@ namespace AppDaTa.Migrations
                     b.Property<Guid>("IDSP")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IDSale")
+                    b.Property<Guid?>("IDSale")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IDSize")
@@ -558,9 +558,7 @@ namespace AppDaTa.Migrations
 
                     b.HasOne("AppDaTa.Models.Sale", "Sale")
                         .WithMany("SanPhamCT")
-                        .HasForeignKey("IDSale")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IDSale");
 
                     b.HasOne("AppDaTa.Models.Size", "Size")
                         .WithMany("SanPhamct")
