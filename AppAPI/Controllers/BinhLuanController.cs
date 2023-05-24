@@ -1,4 +1,4 @@
-﻿
+
 using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
@@ -13,11 +13,19 @@ namespace AppAPI.Controllers
     public class BinhLuanController : ControllerBase
     {
         private IAllRepositories<BinhLuan> irepos;
+        private IAllRepositories<NguoiDung> ireposuser;
+        private IAllRepositories<SanPhamChiTiet> ireposspct;
         private QLBG_Context context = new QLBG_Context();
         public BinhLuanController()
         {
             AllRepositories<BinhLuan> repos = new AllRepositories<BinhLuan>(context, context.binhLuans);
+            AllRepositories<NguoiDung> reposuser =
+                new AllRepositories<NguoiDung>(context, context.nguoiDungs);
+            AllRepositories<SanPhamChiTiet> reposspct =
+              new AllRepositories<SanPhamChiTiet>(context, context.sanPhamCTs);
             irepos = repos;
+            ireposuser = reposuser;
+            ireposspct = reposspct;
         }
         // GET: api/<BinhLuan>
         [HttpGet]
@@ -35,14 +43,15 @@ namespace AppAPI.Controllers
 
         // POST api/<BinhLuan>
         [HttpPost("create-binhluan")]
-        public bool CreateBL(string noidung)
+        public bool CreateBL(  Guid IDuser, Guid Idspct,string noidung,DateTime nbl)
         {
             BinhLuan BL = new BinhLuan();
             BL.NoiDung = noidung;
+            BL.NgayBinh = nbl;
             BL.IDBinhLuan= Guid.NewGuid();
-            //BL.Idspct= Guid.NewGuid();
-            //BL.IdnguoiDung= Guid.NewGuid();
-          
+            BL.IDNguoiDung = ireposuser.GetAll().First(c => c.IDUser == IDuser).IDUser;
+            BL.IDSPCT = ireposspct.GetAll().First(c => c.IDSPCT == Idspct).IDSPCT;
+
             return irepos.CreateNewItem(BL);
         }
         [HttpPut]
@@ -54,13 +63,14 @@ namespace AppAPI.Controllers
             BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == id);
             BL.NoiDung = noidung;
             BL.IDBinhLuan = Guid.NewGuid();
-            //BL.Idspct = Guid.NewGuid();
-            //BL.IdnguoiDung = Guid.NewGuid();
-           
+            BL.IDNguoiDung = ireposuser.GetAll().First(c => c.IDUser == IDuser).IDUser;
+            BL.IDSPCT = ireposspct.GetAll().First(c => c.IDSPCT == Idspct).IDSPCT;
+
+
             return irepos.UpdateItem(BL);
         }
         [HttpDelete("{id}")]
-        public bool DeleteColor(Guid id)
+        public bool DeleteBL(Guid id)
         {
             // Trỏ đến màu sắc trong db để sửa
             BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == id);

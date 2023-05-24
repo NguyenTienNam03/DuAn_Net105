@@ -28,7 +28,7 @@ namespace AppAPI.Controllers
 
         // GET api/<SizeController>/5
         [HttpGet("{id}")]
-        public Size Get(Guid id)
+        public Size GetById(Guid id)
         {
             return ireposize.GetAll().First(c => c.IDSize == id);
         }
@@ -53,7 +53,7 @@ namespace AppAPI.Controllers
         }
 
         // DELETE api/<SizeController>/5
-        [HttpDelete("Remove-size")]
+        [HttpDelete("delete-size")]
         public bool DeleteSize(Guid id)
         {
             Size size = ireposize.GetAll().First(c => c.IDSize == id);
