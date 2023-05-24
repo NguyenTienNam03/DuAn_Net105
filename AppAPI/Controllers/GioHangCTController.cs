@@ -69,6 +69,8 @@ namespace AppAPI.Controllers
             return ireposGHCT.DeleteItem(ghct);
         }
         // trân  trung đông
+        //cgccjmhvb,jbkvu.,l
+        //ansijc.nds.ljbbdask
         //sasadasdsadcs
 
     }
