@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/AppView.styles.css" asp-append-version="true" />
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<header>
@@ -31,23 +33,50 @@
 		</nav>
 	</header>
 	<div class="row">
-		<aside id="sidebar" class="sidebar col-2" style="background-color:lightgray; ">
+		<aside id="sidebar" class="sidebar col-2" style="background-color:white;">
 			<div class="dropdown" style="margin-left:30px; padding:10px;line-height:15px;">
 				<a asp-area="" asp-controller="Home" asp-action="Index">
-				<button type="button" class="btn" >Trang chủ</button>
+					<button type="button" class="btn" style="font-size: 20px;color:black;"><i class='fas fa-home' style='font-size:24px; padding-right: 20px;'></i>Trang chủ</button>
 				</a>
 			</div>
 			<div class="dropdown" style="margin-left:30px; padding:10px;line-height:15px;">
-				<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-					Dropdown button
-				</button>
-				<ul class="dropdown-menu" style="font-family:'Times New Roman'; font-size: 20px;line-height:25px;padding: 5px; margin:5px;">
-					<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Quản lý sản phẩm</a></li>
-					<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Quản lý người dùng</a></li>
-					<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Quản lý Voucher</a></li>
-					<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Sản phẩm Sale</a></li>
-					<li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Hoá Đơn</a></li>
-				</ul>
+				<a asp-area="" asp-controller="Home" asp-action="Index">
+					<button type="button" class="btn" style="font-size: 20px;color:black;"><i class='fab fa-creative-commons-nc' style='font-size:24px; padding-right: 20px;'></i>Sản phẩm Sale</button>
+				</a>
+			</div>
+			<div id="accordion">
+				<div class="card" style="border-color:white;">
+					<div class="card-header" style="margin-left:30px; padding:10px;line-height:15px; background-color:white;">
+						<a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo" style="font-size: 20px; color:black;">
+							<i class="fa fa-user-circle-o" style="font-size:24px; padding-right: 20px;"></i>Tài khoản
+						</a>
+					</div>
+					<div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+						<div class="list-group" style="margin-left:30px; padding:10px;line-height:15px;">
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item"><i class='fas fa-sign-in-alt' style='font-size:17px; padding-right: 20px;'></i>Đăng nhập</a>
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item"><i class='fas fa-cart-plus' style='font-size:17px; padding-right: 20px;'></i>Giỏ hàng</a>
+							<a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item"><i class='fas fa-money-check' style='font-size:17px; padding-right: 20px;'></i>Lịch sử mua hàng</a>
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item"><i class="fa fa-gear" style="font-size:17px; padding-right: 20px;"></i>Cài đặt</a>
+							<a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item"><i class='fas fa-sign-out-alt' style='font-size:17px ;  padding-right: 20px;'></i>Đăng xuất</a>
+						</div>
+					</div>
+				</div>
+				<div class="card" style="border-color:white;">
+					<div class="card-header" style="margin-left:30px; padding:10px;line-height:15px; background-color:white;">
+						<a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree" style="font-size: 20px; color:black;">
+							<i class='fas fa-th-list' style='font-size:24px; padding-right: 20px;'></i>Quản lý
+						</a>
+					</div>
+					<div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+						<div class="list-group" style="margin-left:30px; padding:10px;line-height:15px;">
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item">Quản lý sản phẩm</a>
+							<a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item">Quản lý người dùng </a>
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item">Quản lý Voucher</a>
+							<a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item">Sản phẩm Sale</a>
+							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item">Hoá Đơn</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</aside>
 		<div class="container col-10">
