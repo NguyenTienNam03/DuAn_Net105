@@ -33,6 +33,13 @@ namespace AppAPI.Controllers
         }
 
      
+        [HttpGet("id")]
+        public NguoiDung GetById(Guid id)
+        {
+            return ireposUser.GetAll().First(c => c.IDUser == id);
+        }
+
+
         
 
         // POST api/<ValuesController>
@@ -41,13 +48,14 @@ namespace AppAPI.Controllers
         {
             NguoiDung user = new NguoiDung();
             user.IDUser = Guid.NewGuid();
+             user.IDRole= ireposRole.GetAll().First(c => c.IDRole == idrole).IDRole;
             user.TenKhachHang = Tkh;
             user.SDT = sdt;
             user.MatKhau = matkhau;
             user.Email = email;
             user.TrangThai = 1;
             user.DiaChi = diachi;
-            user.IDRole= ireposRole.GetAll().First(c => c.IDRole == idrole).IDRole;
+           
 
             return ireposUser.CreateNewItem(user);
         }
