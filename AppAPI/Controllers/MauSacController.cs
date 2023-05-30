@@ -20,7 +20,7 @@ namespace AppAPI.Controllers
             ireposmausac = reposmausac;
         }
         [HttpGet]
-        public IEnumerable<MauSac> GetAll()
+        public IEnumerable<MauSac> GetAllColor()
         {
             return ireposmausac.GetAll();
         }
@@ -41,16 +41,16 @@ namespace AppAPI.Controllers
         }
 
         // PUT api/<SaleController>/5
-        [HttpPut("{id}")]
-        public bool UpdateMauSac(Guid id, string mausac)
+        [HttpPut("Edit-color")]
+        public bool UpdateMauSac(Guid id, string ms)
         {
-            MauSac mau = ireposmausac.GetAll().First(c => c.IDMau == id);
-            mau.Mausac = mausac;
-            return ireposmausac.UpdateItem(mau);
+            MauSac color = ireposmausac.GetAll().First(c => c.IDMau == id); 
+            color.Mausac = ms;
+            return ireposmausac.UpdateItem(color);
         }
 
         // DELETE api/<SaleController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete-color")]
         public bool Delete(Guid id)
         {
             MauSac mau = ireposmausac.GetAll().First(c => c.IDMau == id);

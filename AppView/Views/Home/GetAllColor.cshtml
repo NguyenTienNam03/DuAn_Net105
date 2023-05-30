@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AppDaTa.Models.MauSac>
+
+@{
+    ViewData["Title"] = "GetAllColor";
+}
+
+<h1>GetAllColor</h1>
+
+<p>
+    <a asp-action="CreateColor">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDMau)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mausac)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDMau)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mausac)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "EditColor", new { id=item.IDMau }) |
+                    @Html.ActionLink("Details", "DetailColor", new { id=item.IDMau }) |
+                    @Html.ActionLink("Delete", "DeleteColor", new { id=item.IDMau })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -12,6 +12,7 @@ namespace AppAPI.Controllers
     public class HoaDonController : Controller
     {
         private IAllRepositories<HoaDon> irepos;
+        private IAllRepositories<SanPhamChiTiet> IreposSPCT;
         private IAllRepositories<NguoiDung> ireposuser;
         private IAllRepositories<Voucher> ireposvoucher;
         private QLBG_Context context = new QLBG_Context();
@@ -20,7 +21,9 @@ namespace AppAPI.Controllers
             AllRepositories<HoaDon> repos = new AllRepositories<HoaDon>(context, context.hoaDons);
             AllRepositories<NguoiDung> reposuser = new AllRepositories<NguoiDung>(context, context.nguoiDungs);
             AllRepositories<Voucher> reposvoucher = new AllRepositories<Voucher>(context, context.voucher);
+            AllRepositories<SanPhamChiTiet> reposSPCT = new AllRepositories<SanPhamChiTiet>(context, context.sanPhamCTs);
 
+            IreposSPCT = reposSPCT;
             irepos = repos;
             ireposuser = reposuser;
             ireposvoucher = reposvoucher;
