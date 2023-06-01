@@ -13,7 +13,7 @@ namespace AppAPI.Controllers
     public class MauSacController : ControllerBase
     {
         private IAllRepositories<MauSac> ireposmausac;
-        private QLBG_Context _context = new QLBG_Context();
+        public QLBG_Context _context = new QLBG_Context();
         public MauSacController()
         {
             AllRepositories<MauSac> reposmausac = new AllRepositories<MauSac>(_context, _context.maus);
@@ -42,9 +42,9 @@ namespace AppAPI.Controllers
 
         // PUT api/<SaleController>/5
         [HttpPut("Edit-color")]
-        public bool UpdateMauSac(Guid id, string ms)
+        public bool UpdateMauSac(Guid id , string ms)
         {
-            MauSac color = ireposmausac.GetAll().First(c => c.IDMau == id); 
+            MauSac color = ireposmausac.GetAll().First(c => c.IDMau == id);
             color.Mausac = ms;
             return ireposmausac.UpdateItem(color);
         }

@@ -57,7 +57,7 @@ namespace AppView.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditColor(Guid id)
+        public async Task<IActionResult> UpdateMauSac(Guid id)
         {
             string Url = $"https://localhost:7119/api/MauSac/{id}";
             var httpClient = new HttpClient(); // tao ra de call api
@@ -73,18 +73,20 @@ namespace AppView.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditColor(MauSac ms)
+        public async Task<IActionResult> UpdateMauSac(MauSac ms)
         {
-            
-            string url = $"https://localhost:7119/api/MauSac/Edit-color?id={ms.IDMau}&mausac={ms.Mausac}";
-            
-            var client = new HttpClient();
-            string data = JsonConvert.SerializeObject(ms);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage repons = client.PutAsync(url, content).Result;
 
+            string Url = $"https://localhost:7119/api/MauSac/Edit-color?id={ms.IDMau}&ms={ms.Mausac}";
+
+            var httpClient = new HttpClient(); // tao ra de call api
+            string data = JsonConvert.SerializeObject(ms);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = httpClient.PutAsync(Url, content).Result; // lỗi null
+         
             return RedirectToAction("GetAllColor");
         }
+    
         [HttpGet]
         public async Task<IActionResult> DetailColor(Guid id)
         {
