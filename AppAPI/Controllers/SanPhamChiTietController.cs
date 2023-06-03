@@ -1,6 +1,7 @@
 ﻿using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
+using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -45,12 +46,83 @@ namespace AppAPI.Controllers
         {
             return iresposspct.GetAll();
         }
+        [HttpGet("[action]")]
+        public IEnumerable<SanPhamChiTietViewModels> GetSanPhamChiTiet()
+        {
+            var Spct = from a in _context.sanPhamCTs
+                       join b in _context.sanPhams on a.IDSP equals b.IdSP
+                       join c in _context.maus on a.IDMau equals c.IDMau
+                       join d in _context.hangSXs on a.IDHang equals d.IDHangSx
+                       join e in _context.sizes on a.IDSize equals e.IDSize
+                       join f in _context.Sale on a.IDSale equals f.IDSale
+                       join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
+                       select new SanPhamChiTietViewModels
+                       {
+                           Id = a.IDSPCT,
+                           MauSac = c.Mausac,
+                           TenSanPham = b.TenSP,
+                           HangGiay = d.TenHangSX,
+                           Size = e.SizeGiay,
+                           TheLoai = h.TenTheLoai,
+                           GiaTriSale = f.GiaTriSale,
+                           GiaBan = a.GiaBan,
+                           GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale),
+                           Soluong = a.SoLuong,
+                           Anh = a.Anh,
+                           MoTa  = a.MoTa,
+                           TrangThai = a.TrangThai,
+                       };
+            return Spct.ToList();
+        }
+        [HttpGet("[action]")]
+        public  IEnumerable<SanPhamChiTietViewModels> SanPhamSale()
+        {
+            foreach(var item in irespossale.GetAll())
+            {
+                var IDsale = irespossale.GetAll().FirstOrDefault(c => c.IDSale == item.IDSale).IDSale;
+                if (iresposspct.GetAll().Any(c => c.IDSale == IDsale) == true)
+                {
+                    var Spct = from a in _context.sanPhamCTs
+                               join b in _context.sanPhams on a.IDSP equals b.IdSP
+                               join c in _context.maus on a.IDMau equals c.IDMau
+                               join d in _context.hangSXs on a.IDHang equals d.IDHangSx
+                               join e in _context.sizes on a.IDSize equals e.IDSize
+                               join f in _context.Sale on a.IDSale equals f.IDSale
+                               join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
+                               select new SanPhamChiTietViewModels
+                               {
+                                   Id = a.IDSPCT,
+                                   MauSac = c.Mausac,
+                                   TenSanPham = b.TenSP,
+                                   HangGiay = d.TenHangSX,
+                                   Size = e.SizeGiay,
+                                   TheLoai = h.TenTheLoai,
+                                   GiaTriSale = f.GiaTriSale,
+                                   GiaBan = a.GiaBan,
+                                   GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale),
+                                   Soluong = a.SoLuong,
+                                   Anh = a.Anh,
+                                   MoTa = a.MoTa,
+                                   TrangThai = a.TrangThai,
+                               };
+                    return Spct.ToList();
+                }
+            }
+            // nếu không có liệu thì sẽ trả về dữ liệu trống.
+            return new List<SanPhamChiTietViewModels>();
+        } 
 
         // GET api/<SanPhamChiTietController>/5
         [HttpGet("{id}")]
         public SanPhamChiTiet GetById(Guid id)
         {
             return iresposspct.GetAll().First(c => c.IDSPCT == id);
+        }
+
+        [HttpGet("[action]")]
+        public Sale GetByIdSale(Guid id )
+        {
+            return irespossale.GetAll().First(c => c.IDSale == id);
         }
 
         // POST api/<SanPhamChiTietController>
