@@ -40,27 +40,41 @@ namespace AppAPI.Controllers
 
         // POST api/<GioHangCTController>
        [HttpPost("create-giohangchitiet")]
-        public bool CreateGHCT( Guid idghct, Guid idgh, Guid idspct, decimal gia, int soLuong )
+        public bool CreateGHCT(Guid idgh, Guid idspct )
         {
             GioHangChiTiet ghct = new  GioHangChiTiet();
             ghct.IDGHCT = Guid.NewGuid();
             ghct.IDGH = ireposGH.GetAll().First(ghct => ghct.IDGioHang == idgh).IDGioHang;
             ghct.IDSPCT = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).IDSPCT;
-            ghct.Gia = gia;
-            ghct.SoLuong = soLuong;
+            ghct.Gia = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).GiaSale;
+            ghct.SoLuong = 1;
             return ireposGHCT.CreateNewItem(ghct);
         }
         [HttpPut]
         [Route("edit-giohangchitiet")]
-        public bool UpdateGHCT(Guid idghct, Guid idgh, Guid idspct, decimal gia, int soluong)
+        public bool UpdateGHCT(Guid idspct , int soluong)
         {
-            GioHangChiTiet ghct = new GioHangChiTiet();
-            ghct.IDGHCT = Guid.NewGuid();
-            ghct.IDGH = ireposGH.GetAll().First(ghct => ghct.IDGioHang == idgh).IDGioHang;
-            ghct.IDSPCT = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).IDSPCT;
-            ghct.Gia = gia;
-            ghct.SoLuong = soluong;
+            var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
+            GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
+            if(ghct != null)
+            {
+                ghct.SoLuong = soluong;
+            }
             return ireposGHCT.UpdateItem(ghct);
+
+        }
+        [HttpPut]
+        [Route("[action]")]
+        public bool ThemVaoGioHang(Guid idspct)
+        {
+            var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
+            GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
+            if (ghct != null)
+            {
+                ghct.SoLuong ++;
+            }
+            return ireposGHCT.UpdateItem(ghct);
+
         }
         [HttpDelete("{id}")]
         public bool DeleteGHCT(Guid id)
