@@ -23,7 +23,7 @@ namespace AppAPI.Controllers
         [HttpGet]
         public IEnumerable<Sale> Getall()
         {
-            return irepossale.GetAll();
+            return irepossale.GetAll().OrderBy(c => c.GiaTriSale);
         }
 
         // GET api/<SaleController>/5

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<AppDaTa.Models.Sale>
+
+@{
+    ViewData["Title"] = "ShowAllSale";
+}
+
+<h1>ShowAllSale</h1>
+
+<p>
+    <a asp-action="CreateSale">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDSale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaSale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayBatDau)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayKetThuc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GiaTriSale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThai)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDSale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaSale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayBatDau)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayKetThuc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaTriSale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "EditSale", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "SaleDetail", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "DeleteSale", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

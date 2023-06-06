@@ -24,7 +24,7 @@ namespace AppAPI.Controllers
         private QLBG_Context _context = new QLBG_Context();
         public SanPhamChiTietController()
         {
-            AllRepositories<SanPhamChiTiet> reposspct = new AllRepositories<SanPhamChiTiet>(_context , _context.sanPhamCTs);
+            AllRepositories<SanPhamChiTiet> reposspct = new AllRepositories<SanPhamChiTiet>(_context, _context.sanPhamCTs);
             AllRepositories<MauSac> reposmausac = new AllRepositories<MauSac>(_context, _context.maus);
             AllRepositories<Size> repossize = new AllRepositories<Size>(_context, _context.sizes);
             AllRepositories<SanPham> repossanpham = new AllRepositories<SanPham>(_context, _context.sanPhams);
@@ -66,51 +66,54 @@ namespace AppAPI.Controllers
                            TheLoai = h.TenTheLoai,
                            GiaTriSale = f.GiaTriSale,
                            GiaBan = a.GiaBan,
-                           GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale),
+                           GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale / 100),
                            Soluong = a.SoLuong,
                            Anh = a.Anh,
-                           MoTa  = a.MoTa,
+                           MoTa = a.MoTa,
                            TrangThai = a.TrangThai,
                        };
             return Spct.ToList();
+            //}
+            //// nếu không có liệu thì sẽ trả về dữ liệu trống.
+            //return new List<SanPhamChiTietViewModels>();
         }
         [HttpGet("[action]")]
-        public  IEnumerable<SanPhamChiTietViewModels> SanPhamSale()
+        public List<SanPhamChiTietViewModels> SanPhamSale()
         {
-            foreach(var item in irespossale.GetAll())
+            //foreach (var item in iresposspct.GetAll())
+            //{
+            var idsale = irespossale.GetAll().FirstOrDefault(c => c.GiaTriSale == 0).IDSale;
+            if (iresposspct.GetAll().Any(c => c.IDSale != idsale))
             {
-                var IDsale = irespossale.GetAll().FirstOrDefault(c => c.IDSale == item.IDSale).IDSale;
-                if (iresposspct.GetAll().Any(c => c.IDSale == IDsale) == true)
-                {
-                    var Spct = from a in _context.sanPhamCTs
-                               join b in _context.sanPhams on a.IDSP equals b.IdSP
-                               join c in _context.maus on a.IDMau equals c.IDMau
-                               join d in _context.hangSXs on a.IDHang equals d.IDHangSx
-                               join e in _context.sizes on a.IDSize equals e.IDSize
-                               join f in _context.Sale on a.IDSale equals f.IDSale
-                               join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
-                               select new SanPhamChiTietViewModels
-                               {
-                                   Id = a.IDSPCT,
-                                   MauSac = c.Mausac,
-                                   TenSanPham = b.TenSP,
-                                   HangGiay = d.TenHangSX,
-                                   Size = e.SizeGiay,
-                                   TheLoai = h.TenTheLoai,
-                                   GiaTriSale = f.GiaTriSale,
-                                   GiaBan = a.GiaBan,
-                                   GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale),
-                                   Soluong = a.SoLuong,
-                                   Anh = a.Anh,
-                                   MoTa = a.MoTa,
-                                   TrangThai = a.TrangThai,
-                               };
-                    return Spct.ToList();
-                }
+                var Spct = from a in _context.sanPhamCTs
+                           join b in _context.sanPhams on a.IDSP equals b.IdSP
+                           join c in _context.maus on a.IDMau equals c.IDMau
+                           join d in _context.hangSXs on a.IDHang equals d.IDHangSx
+                           join e in _context.sizes on a.IDSize equals e.IDSize
+                           join f in _context.Sale on a.IDSale equals f.IDSale
+                           join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
+                           select new SanPhamChiTietViewModels
+                           {
+                               Id = a.IDSPCT,
+                               MauSac = c.Mausac,
+                               TenSanPham = b.TenSP,
+                               HangGiay = d.TenHangSX,
+                               Size = e.SizeGiay,
+                               TheLoai = h.TenTheLoai,
+                               GiaTriSale = f.GiaTriSale,
+                               GiaBan = a.GiaBan,
+                               GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale / 100),
+                               Soluong = a.SoLuong,
+                               Anh = a.Anh,
+                               MoTa = a.MoTa,
+                               TrangThai = a.TrangThai,
+                           };
+                return Spct.ToList();
             }
+            //}
             // nếu không có liệu thì sẽ trả về dữ liệu trống.
             return new List<SanPhamChiTietViewModels>();
-        } 
+        }
 
         // GET api/<SanPhamChiTietController>/5
         [HttpGet("{id}")]
@@ -120,14 +123,14 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        public Sale GetByIdSale(Guid id )
+        public Sale GetByIdSale(Guid id)
         {
             return irespossale.GetAll().First(c => c.IDSale == id);
         }
 
         // POST api/<SanPhamChiTietController>
         [HttpPost("Create-spct")]
-        public bool CreateSPCT(Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban , decimal giasale , int soluong, string anh , string mota) // 
+        public bool CreateSPCT(Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban, int soluong, string anh, string mota) // 
         {
             SanPhamChiTiet spct = new SanPhamChiTiet();
             spct.IDSPCT = Guid.NewGuid();
@@ -138,7 +141,7 @@ namespace AppAPI.Controllers
             spct.IDHang = iresponhangsx.GetAll().First(c => c.IDHangSx == idhangsx).IDHangSx; // ID Hãng SX phải có trong bảng Hãng SX
             spct.IDSale = irespossale.GetAll().First(c => c.IDSale == idsale).IDSale; // ID Sale phải có trong bảng sale
             spct.GiaBan = giaban;
-            spct.GiaSale = giasale;
+            spct.GiaSale = giaban - (giaban * irespossale.GetAll().First(c => c.IDSale == idsale).GiaTriSale / 100);
             spct.SoLuong = soluong;
             spct.Anh = anh;
             spct.MoTa = mota;
@@ -148,7 +151,7 @@ namespace AppAPI.Controllers
 
         // PUT api/<SanPhamChiTietController>/5
         [HttpPut("Upadte-SPCT")]
-        public bool UpdateSPCT(Guid idspct, Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban, decimal giasale, int soluong, string anh, string mota, int trangthai)
+        public bool UpdateSPCT(Guid idspct, Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban, int soluong, string anh, string mota, int trangthai)
         {
             SanPhamChiTiet spct = iresposspct.GetAll().FirstOrDefault(c => c.IDSPCT == idspct);
             spct.IDMau = iresposmausac.GetAll().First(c => c.IDMau == idms).IDMau;
@@ -158,7 +161,7 @@ namespace AppAPI.Controllers
             spct.IDHang = iresponhangsx.GetAll().First(c => c.IDHangSx == idhangsx).IDHangSx;
             spct.IDSale = irespossale.GetAll().First(c => c.IDSale == idsale).IDSale;
             spct.GiaBan = giaban;
-            spct.GiaSale = giasale;
+            spct.GiaSale = giaban - (giaban * irespossale.GetAll().First(c => c.IDSale == idsale).GiaTriSale / 100);
             spct.SoLuong = soluong;
             spct.Anh = anh;
             spct.MoTa = mota;
@@ -171,7 +174,7 @@ namespace AppAPI.Controllers
         public bool DeleteSPCT(Guid idspct)
         {
             SanPhamChiTiet spct = iresposspct.GetAll().FirstOrDefault(c => c.IDSPCT == idspct);
-            return iresposspct.DeleteItem(spct);    
+            return iresposspct.DeleteItem(spct);
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDaTa.Migrations
 {
-    public partial class Test : Migration
+    public partial class DuAn_net105 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,6 +1,7 @@
 ﻿using AppDaTa.Models;
 using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -28,7 +29,16 @@ namespace AppView.Controllers
             var SPCT = JsonConvert.DeserializeObject<List<SanPhamChiTietViewModels>>(datapi);
             return View(SPCT);
         }
-
+        [HttpGet] 
+        public async Task<IActionResult> CreateDetailProDuct()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateDetalProduct(SanPhamChiTiet spct)
+        {
+            return View(spct);
+        }
         [HttpGet]
         public async Task<IActionResult> GetAllColor()
         {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppDaTa.Migrations
 {
     [DbContext(typeof(QLBG_Context))]
-    [Migration("20230524055358_Test")]
-    partial class Test
+    [Migration("20230605171409_DuAn_net105")]
+    partial class DuAn_net105
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
