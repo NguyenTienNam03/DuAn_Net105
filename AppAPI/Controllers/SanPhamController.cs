@@ -42,7 +42,7 @@ namespace AppAPI.Controllers
             sanPham.TenSP = ten;
             return irepos.UpdateItem(sanPham);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{Delete-SanPham")]
         public bool DeleteSanPham(Guid id)
         {
             SanPham sanPham = irepos.GetAll().First(p => p.IdSP == id);

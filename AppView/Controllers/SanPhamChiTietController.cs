@@ -125,5 +125,71 @@ namespace AppView.Controllers
 
             return RedirectToAction("GetAllColor");
         }
+
+        public async Task<IActionResult> GetAllSanPham()
+        {
+            string url = $"https://localhost:7119/api/SanPham";
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(url);
+            string dataapi = await response.Content.ReadAsStringAsync();
+            var listSP = JsonConvert.DeserializeObject<List<MauSac>>(dataapi);
+            return View(listSP);
+        }
+        [HttpGet]
+        public IActionResult CreateSanPham()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateSanPham(SanPham sp)
+        {
+            string data = JsonConvert.SerializeObject(sp);
+            string url = $"https://localhost:7119/api/SanPham/Create-SanPham?ten={sp.TenSP}";
+            var client = new HttpClient();
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+            return RedirectToAction("GetAllSanPham");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditSanPham(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/SanPham/{id}";
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(Url);
+            string apiData = await response.Content.ReadAsStringAsync();
+            SanPham sp = JsonConvert.DeserializeObject<SanPham>(apiData);
+            return View(sp);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSanPham(SanPham sp)
+        {
+
+            string url = $"https://localhost:7119/api/SanPham/edit-SanPham?id={sp.IdSP}&mausac={sp.TenSP}";
+
+            var client = new HttpClient();
+            string data = JsonConvert.SerializeObject(sp);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PutAsync(url, content).Result;
+            return RedirectToAction("GetAllSanPham");
+        }
+        [HttpGet]
+        public async Task<IActionResult> DetailSanPham(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/SanPham/{id}";
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(Url);
+            string apiData = await response.Content.ReadAsStringAsync();
+            SanPham sp = JsonConvert.DeserializeObject<SanPham>(apiData);
+            return View(sp);
+        }
+        public async Task<IActionResult> DeleteSanPham(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/MauSac/Delete-SanPham?id={id}";
+            var httpClient = new HttpClient();
+            var response = await httpClient.DeleteAsync(Url);
+            return RedirectToAction("GetAllSanPham");
+        }
     }
 }
