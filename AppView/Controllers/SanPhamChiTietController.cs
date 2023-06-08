@@ -1,7 +1,7 @@
 ﻿using AppDaTa.Models;
 using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -9,6 +9,8 @@ namespace AppView.Controllers
 {
     public class SanPhamChiTietController : Controller
     {
+        private QLBG_Context _context = new QLBG_Context();
+		public SanPhamChiTietController() { }
         [HttpGet]
         public IActionResult ShowAllSPCT()
         {
@@ -30,16 +32,29 @@ namespace AppView.Controllers
             return View(SPCT);
         }
         [HttpGet] 
-        public async Task<IActionResult> CreateDetailProDuct()
+        public async Task<IActionResult> CreateProductDetail()
         {
-            return View();
+			ViewBag.Color = new SelectList(_context.maus.ToList().OrderBy(c => c.Mausac), "IDMau", "Mausac");
+			ViewBag.SanPham = new SelectList(_context.sanPhams.ToList().OrderBy(c => c.TenSP), "IdSP", "TenSP");
+			ViewBag.Size = new SelectList(_context.sizes.ToList().OrderBy(c => c.SizeGiay), "IDSize", "SizeGiay");
+			ViewBag.Sale = new SelectList(_context.Sale.ToList().OrderBy(c => c.GiaTriSale), "IDSale", "GiaTriSale");
+			ViewBag.Hang = new SelectList(_context.hangSXs.ToList().OrderBy(c => c.TenHangSX), "IDHangSx", "TenHangSX");
+			ViewBag.TheLoai = new SelectList(_context.theLoai.ToList().OrderBy(c => c.TenTheLoai), "IDTheLoai", "TenTheLoai");
+			return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateDetalProduct(SanPhamChiTiet spct)
+        public IActionResult CreateProductDetail(SanPhamChiTiet spct)
         {
-            return View(spct);
+            string url = $"https://localhost:7119/api/SanPhamChiTiet/Create-spct?idms={spct.IDMau}&idsize={spct.IDSize}&idsp={spct.IDSP}&idtl={spct.IDTheLoai}&idhangsx={spct.IDHang}&idsale={spct.IDSale}&giaban={spct.GiaBan}&soluong={spct.SoLuong}&anh={spct.Anh}&mota={spct.MoTa}\r\n";
+            var spct1 = JsonConvert.SerializeObject(spct);
+            var client = new HttpClient();
+            StringContent content = new StringContent(spct1 ,Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+
+			return RedirectToAction("ShowAllSPCT");
         }
-        [HttpGet]
+		
+		[HttpGet]
         public async Task<IActionResult> GetAllColor()
         {
             string url = $"https://localhost:7119/api/MauSac";
