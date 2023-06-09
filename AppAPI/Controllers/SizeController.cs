@@ -15,12 +15,12 @@ namespace AppAPI.Controllers
         private QLBG_Context _context = new QLBG_Context();
         public SizeController()
         {
-            AllRepositories<Size> repossize = new AllRepositories<Size>(_context , _context.sizes);
+            AllRepositories<Size> repossize = new AllRepositories<Size>(_context, _context.sizes);
             ireposize = repossize;
         }
 
         // GET: api/<SizeController>
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<Size> GetAll()
         {
             return ireposize.GetAll();
@@ -34,8 +34,8 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<SizeController>
-        [HttpPost("Create-size")]
-        public bool CreateSize(decimal sizegiay )
+        [HttpPost("{Create-size}")]
+        public bool CreateSize(decimal sizegiay)
         {
             Size size = new Size();
             size.IDSize = Guid.NewGuid();
@@ -44,8 +44,8 @@ namespace AppAPI.Controllers
         }
 
         // PUT api/<SizeController>/5
-        [HttpPut("Edit-size")]
-        public bool UpdateSize(Guid id , decimal sizegiay)
+        [HttpPut("{Edit-size}")]
+        public bool UpdateSize(Guid id, decimal sizegiay)
         {
             Size size = ireposize.GetAll().First(c => c.IDSize == id);
             size.SizeGiay += sizegiay;
@@ -53,7 +53,7 @@ namespace AppAPI.Controllers
         }
 
         // DELETE api/<SizeController>/5
-        [HttpDelete("delete-size")]
+        [HttpDelete("{delete-size}")]
         public bool DeleteSize(Guid id)
         {
             Size size = ireposize.GetAll().First(c => c.IDSize == id);

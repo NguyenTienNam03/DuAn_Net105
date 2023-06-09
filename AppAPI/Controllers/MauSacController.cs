@@ -19,19 +19,19 @@ namespace AppAPI.Controllers
             AllRepositories<MauSac> reposmausac = new AllRepositories<MauSac>(_context, _context.maus);
             ireposmausac = reposmausac;
         }
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<MauSac> GetAllColor()
         {
             return ireposmausac.GetAll();
         }
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
         public MauSac Get(Guid id)
         {
             return ireposmausac.GetAll().First(c => c.IDMau == id);
         }
 
         // POST api/<SaleController>
-        [HttpPost("create-mausac")]
+        [HttpPost("{create-mausac}")]
         public bool CreateMauSac(string mausac)
         {
             MauSac mau = new MauSac();
@@ -41,8 +41,8 @@ namespace AppAPI.Controllers
         }
 
         // PUT api/<SaleController>/5
-        [HttpPut("Edit-color")]
-        public bool UpdateMauSac(Guid id , string ms)
+        [HttpPut("{Edit-color}")]
+        public bool UpdateMauSac(Guid id, string ms)
         {
             MauSac color = ireposmausac.GetAll().First(c => c.IDMau == id);
             color.Mausac = ms;
@@ -50,7 +50,7 @@ namespace AppAPI.Controllers
         }
 
         // DELETE api/<SaleController>/5
-        [HttpDelete("Delete-color")]
+        [HttpDelete("{Delete-color}")]
         public bool Delete(Guid id)
         {
             MauSac mau = ireposmausac.GetAll().First(c => c.IDMau == id);

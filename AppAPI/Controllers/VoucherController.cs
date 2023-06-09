@@ -17,18 +17,22 @@ namespace AppAPI.Controllers
             AllRepositories<Voucher> repos = new AllRepositories<Voucher>(_context, _context.voucher);
             _repos = repos;
         }
-        [HttpGet]
+        [HttpGet("[action]")]
         public IEnumerable<Voucher> GettAllVoucher()
         {
             return _repos.GetAll();
         }
-        [HttpPost]
-        public bool CreateVoucher(string MaVoucher, DateTime NgayTao, decimal Dieukien, DateTime NgayBatDau, DateTime NgayKetThuc, decimal GiaTriVoucher,
-            int Soluong, int TrangThai)
+		[HttpGet("[action]")]
+		public Voucher GettByIDVoucher(Guid id)
+		{
+			return _repos.GetAll().First(c => c.IDVoucher == id);
+		}
+		[HttpPost("[action]")]
+        public bool CreateVoucher(string MaVoucher, DateTime NgayTao, decimal Dieukien, DateTime NgayBatDau, DateTime NgayKetThuc, decimal GiaTriVoucher, int Soluong, int TrangThai)
         {
             Voucher a1 = new Voucher();
-            a1.IDVoucher = new Guid();
-            
+            a1.IDVoucher = Guid.NewGuid();
+
             a1.MaVoucher = MaVoucher;
             a1.NgayTao = NgayTao;
             a1.Dieukien = Dieukien;
@@ -41,19 +45,18 @@ namespace AppAPI.Controllers
 
             return _repos.CreateNewItem(a1);
         }
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public bool DeleteVoucher(Guid Id)
         {
             Voucher b = _repos.GetAll().First(p => p.IDVoucher == Id);
 
             return _repos.DeleteItem(b);
         }
-        [HttpPut]
-        public bool UpdateVoucher(Guid IDVoucher, string MaVoucher, DateTime NgayTao, decimal Dieukien, DateTime NgayBatDau, DateTime NgayKetThuc, decimal GiaTriVoucher,
-            int Soluong, int TrangThai)
+        [HttpPut("[action]")]
+        public bool UpdateVoucher(Guid IDVoucher, string MaVoucher, DateTime NgayTao, decimal Dieukien, DateTime NgayBatDau, DateTime NgayKetThuc, decimal GiaTriVoucher, int Soluong, int TrangThai)
         {
             Voucher b = _repos.GetAll().First(p => p.IDVoucher == IDVoucher);
-            
+
 
             b.MaVoucher = MaVoucher;
             b.NgayTao = NgayTao;

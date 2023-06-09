@@ -9,6 +9,7 @@ namespace AppView.Controllers
 {
     public class SanPhamChiTietController : Controller
     {
+        // spct , 
         private QLBG_Context _context = new QLBG_Context();
 		public SanPhamChiTietController() { }
         [HttpGet]

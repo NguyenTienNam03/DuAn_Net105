@@ -14,9 +14,9 @@ namespace AppAPI.Controllers
         private IAllRepositories<GioHang> ireposgiohang;
         private IAllRepositories<NguoiDung> ireposuser;
         private QLBG_Context _Context = new QLBG_Context();
-        public GioHangController() 
+        public GioHangController()
         {
-            AllRepositories<GioHang> reposgiohang = new AllRepositories<GioHang>(_Context , _Context.gioHangs);
+            AllRepositories<GioHang> reposgiohang = new AllRepositories<GioHang>(_Context, _Context.gioHangs);
             AllRepositories<NguoiDung> reposuser = new AllRepositories<NguoiDung>(_Context, _Context.nguoiDungs);
             ireposgiohang = reposgiohang;
             ireposuser = reposuser;
@@ -36,7 +36,7 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<GioHangController>
-        [HttpPost("Create-giohang")]
+        [HttpPost("{Create-giohang}")]
         public bool CreateGioHang(Guid id, string description)
         {
             GioHang gioHang = new GioHang();
