@@ -25,8 +25,8 @@ namespace AppAPI.Controllers
             ireposGH = reposGH;
         }
         // GET: api/<GioHangCTController>
-        [HttpGet]
-        public IEnumerable<GioHangChiTiet> Get()
+        [HttpGet("[action]")]
+        public IEnumerable<GioHangChiTiet> GetAll()
         {
             return ireposGHCT.GetAll();
         }
@@ -39,53 +39,50 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<GioHangCTController>
-       [HttpPost("create-giohangchitiet")]
-        public bool CreateGHCT(Guid idgh, Guid idspct )
+        [HttpPost("{create-giohangchitiet}")]
+        public bool ThemVaoGioHang(Guid idgh, Guid idspct)
         {
-            GioHangChiTiet ghct = new  GioHangChiTiet();
-            ghct.IDGHCT = Guid.NewGuid();
-            ghct.IDGH = ireposGH.GetAll().First(ghct => ghct.IDGioHang == idgh).IDGioHang;
-            ghct.IDSPCT = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).IDSPCT;
-            ghct.Gia = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).GiaSale;
-            ghct.SoLuong = 1;
-            return ireposGHCT.CreateNewItem(ghct);
-        }
-        [HttpPut]
-        [Route("edit-giohangchitiet")]
-        public bool UpdateGHCT(Guid idspct , int soluong)
-        {
-            var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
-            GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
-            if(ghct != null)
+            if (ireposGHCT.GetAll().Any(c => c.IDSPCT == idspct) == true)
             {
-                ghct.SoLuong = soluong;
+                var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
+                GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
+                if (ghct != null)
+                {
+                    ghct.SoLuong++;
+                }
+                return ireposGHCT.UpdateItem(ghct);
+            }
+            else
+            {
+                GioHangChiTiet ghct = new GioHangChiTiet();
+                ghct.IDGHCT = Guid.NewGuid();
+                ghct.IDGH = ireposGH.GetAll().First(ghct => ghct.IDGioHang == idgh).IDGioHang;
+                ghct.IDSPCT = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).IDSPCT;
+                ghct.Gia = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).GiaSale;
+                ghct.SoLuong = 1;
+                return ireposGHCT.CreateNewItem(ghct);
+            }
+        }
+        [HttpPut("[action]")]
+        public bool UpdateGHCT(Guid idspct, int soluong)
+        {
+            var soluongton = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).SoLuong;
+            GioHangChiTiet ghct = ireposGHCT.GetAll().FirstOrDefault(ghct => ghct.IDSPCT == idspct);
+            if (soluongton > 0 && soluongton <= soluong)
+            {
+                if (ghct != null)
+                {
+                    ghct.SoLuong = soluong;
+                }
             }
             return ireposGHCT.UpdateItem(ghct);
-
         }
-        [HttpPut]
-        [Route("[action]")]
-        public bool ThemVaoGioHang(Guid idspct)
-        {
-            var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
-            GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
-            if (ghct != null)
-            {
-                ghct.SoLuong ++;
-            }
-            return ireposGHCT.UpdateItem(ghct);
-
-        }
-        [HttpDelete("{id}")]
+        [HttpDelete("[action]")]
         public bool DeleteGHCT(Guid id)
         {
             GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDGHCT == id);
             return ireposGHCT.DeleteItem(ghct);
         }
-        // trân  trung đông
-        //cgccjmhvb,jbkvu.,l
-        //ansijc.nds.ljbbdask
-        //sasadasdsadcs
 
     }
 }

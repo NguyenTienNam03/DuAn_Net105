@@ -4,7 +4,7 @@ using AppDaTa.Models;
 using AppDaTa.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppAPI.Controllers
 {
@@ -31,7 +31,7 @@ namespace AppAPI.Controllers
         [HttpGet]
         public IEnumerable<BinhLuan> Get()
         {
-           return irepos.GetAll();
+            return irepos.GetAll();
         }
 
         // GET api/<BinhLuan>/5
@@ -42,24 +42,24 @@ namespace AppAPI.Controllers
         }
 
         // POST api/<BinhLuan>
-        [HttpPost("create-binhluan")]
-        public bool CreateBL(  Guid IDuser, Guid Idspct,string noidung,DateTime nbl)
+        [HttpPost("{create-binhluan}")]
+        public bool CreateBL(Guid IDuser, Guid Idspct, string noidung, DateTime nbl)
         {
             BinhLuan BL = new BinhLuan();
             BL.NoiDung = noidung;
             BL.NgayBinh = nbl;
-            BL.IDBinhLuan= Guid.NewGuid();
+            BL.IDBinhLuan = Guid.NewGuid();
             BL.IDNguoiDung = ireposuser.GetAll().First(c => c.IDUser == IDuser).IDUser;
             BL.IDSPCT = ireposspct.GetAll().First(c => c.IDSPCT == Idspct).IDSPCT;
 
             return irepos.CreateNewItem(BL);
         }
-        [HttpPut]
-        [Route("edit-binhluan")]
-        public bool UpdateBinhLuan(BinhLuan a )
+        [HttpPut("{edit-binhluan}")]
+
+        public bool UpdateBinhLuan(BinhLuan a)
         {
             // Trỏ đến màu sắc trong db để sửa
-            
+
             BinhLuan BL = irepos.GetAll().First(p => p.IDBinhLuan == a.IDBinhLuan);
 
             BL = a;

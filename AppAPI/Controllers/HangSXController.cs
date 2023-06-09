@@ -15,42 +15,41 @@ namespace AppAPI.Controllers
         private QLBG_Context context = new QLBG_Context();
         public HangSXController()
         {
-                AllRepositories<HangSX> reposHangSX = new AllRepositories<HangSX>(context, context.hangSXs);
-                ireposHangSX = reposHangSX;
+            AllRepositories<HangSX> reposHangSX = new AllRepositories<HangSX>(context, context.hangSXs);
+            ireposHangSX = reposHangSX;
         }
         // GET: api/<HangSXController>
-        [HttpGet]
-        public IEnumerable<HangSX> Get()
+        [HttpGet("[action]")]
+        public IEnumerable<HangSX> GetAll()
         {
             return ireposHangSX.GetAll();
         }
 
         // GET api/<HangSXController>/5
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
         public HangSX Get(Guid id)
         {
             return ireposHangSX.GetAll().First(h => h.IDHangSx == id);
         }
 
         // POST api/<HangSXController>
-        [HttpPost("create-HangSX")]
+        [HttpPost("[action]")]
         public bool CreateHangSX(string tenHangSX)
         {
-            HangSX H = new  HangSX();
+            HangSX H = new HangSX();
             H.IDHangSx = Guid.NewGuid();
             H.TenHangSX = tenHangSX;
             return ireposHangSX.CreateNewItem(H);
         }
-        [HttpPut]
-        [Route("edit-hangSX")]
+        [HttpPut("[action]")]
+
         public bool UpdateHangSX(Guid id, string tenHangSx)
         {
             HangSX H = ireposHangSX.GetAll().First(p => p.IDHangSx == id);
-            H.IDHangSx = Guid.NewGuid();
             H.TenHangSX = tenHangSx;
             return ireposHangSX.UpdateItem(H);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("[action]")]
         public bool DeleteHangSX(Guid id)
         {
             HangSX H = ireposHangSX.GetAll().First(p => p.IDHangSx == id);

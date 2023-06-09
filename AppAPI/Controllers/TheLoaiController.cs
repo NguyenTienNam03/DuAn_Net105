@@ -21,14 +21,14 @@ namespace AppAPI.Controllers
         {
             return irepostheloai.GetAll();
         }
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
         public TheLoai Get(Guid id)
         {
             return irepostheloai.GetAll().First(c => c.IDTheLoai == id);
         }
 
         // POST api/<SaleController>
-        [HttpPost]
+        [HttpPost("[action]")]
         public bool CreateTheLoai(string tentheloai, string mota)
         {
             TheLoai theLoai = new TheLoai();
@@ -39,16 +39,17 @@ namespace AppAPI.Controllers
         }
 
         // PUT api/<SaleController>/5
-        [HttpPut("{id}")]
+        [HttpPut("[action]")]
         public bool UpdateTheLoai(Guid id, string theloai, string mota)
         {
             TheLoai theLoai = irepostheloai.GetAll().First(c => c.IDTheLoai == id);
             theLoai.TenTheLoai = theloai;
+            theLoai.MoTa = mota;
             return irepostheloai.UpdateItem(theLoai);
         }
 
         // DELETE api/<SaleController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("[action]")]
         public bool DeleteTheLoai(Guid id)
         {
             TheLoai theLoai = irepostheloai.GetAll().First(c => c.IDTheLoai == id);

@@ -72,19 +72,21 @@ namespace AppAPI.Controllers
 						   MoTa = a.MoTa,
 						   TrangThai = a.TrangThai,
 					   };
-			return Spct.ToList();
+			if(Spct.Any(c => c.Soluong > 0))
+			{
+				return Spct.ToList();
+			} else
+			{
+				//// nếu không có liệu thì sẽ trả về dữ liệu trống.
+				return new List<SanPhamChiTietViewModels>();
+			}
 			//}
-			//// nếu không có liệu thì sẽ trả về dữ liệu trống.
-			//return new List<SanPhamChiTietViewModels>();
 		}
 		[HttpGet("[action]")]
 		public List<SanPhamChiTietViewModels> SanPhamSale()
 		{
 			//foreach (var item in iresposspct.GetAll())
 			//{
-			var idsale = irespossale.GetAll().FirstOrDefault(c => c.GiaTriSale == 0).IDSale;
-			if (iresposspct.GetAll().Any(c => c.IDSale != idsale))
-			{
 				var Spct = from a in _context.sanPhamCTs
 						   join b in _context.sanPhams on a.IDSP equals b.IdSP
 						   join c in _context.maus on a.IDMau equals c.IDMau
@@ -108,11 +110,17 @@ namespace AppAPI.Controllers
 							   MoTa = a.MoTa,
 							   TrangThai = a.TrangThai,
 						   };
+			if (Spct.Any(c => c.Soluong > 0 && c.GiaTriSale > 0))
+			{
 				return Spct.ToList();
 			}
-			//}
+			else
+			{
+				//// nếu không có liệu thì sẽ trả về dữ liệu trống.
+				return new List<SanPhamChiTietViewModels>();
+			}
 			// nếu không có liệu thì sẽ trả về dữ liệu trống.
-			return new List<SanPhamChiTietViewModels>();
+			//}	
 		}
 		[HttpGet("[action]")]
 		public SanPhamChiTietViewModels GetByIDSanPhamChiTiet(Guid id)
@@ -156,7 +164,7 @@ namespace AppAPI.Controllers
 		}
 
 		// POST api/<SanPhamChiTietController>
-		[HttpPost("Create-spct")]
+		[HttpPost("{Create-spct}")]
 		public bool CreateSPCT(Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban, int soluong, string anh, string mota) // 
 		{
 			SanPhamChiTiet spct = new SanPhamChiTiet();
@@ -172,12 +180,18 @@ namespace AppAPI.Controllers
 			spct.SoLuong = soluong;
 			spct.Anh = anh;
 			spct.MoTa = mota;
-			spct.TrangThai = 1;
+			if(soluong > 0)
+			{
+				spct.TrangThai = 1;
+			} else
+			{
+				spct.TrangThai = 0;
+			}
 			return iresposspct.CreateNewItem(spct);
 		}
 
 		// PUT api/<SanPhamChiTietController>/5
-		[HttpPut("Upadte-SPCT")]
+		[HttpPut("{Upadte-SPCT}")]
 		public bool UpdateSPCT(Guid idspct, Guid idms, Guid idsize, Guid idsp, Guid idtl, Guid idhangsx, Guid idsale, decimal giaban, int soluong, string anh, string mota, int trangthai)
 		{
 			SanPhamChiTiet spct = iresposspct.GetAll().FirstOrDefault(c => c.IDSPCT == idspct);
@@ -192,16 +206,21 @@ namespace AppAPI.Controllers
 			spct.SoLuong = soluong;
 			spct.Anh = anh;
 			spct.MoTa = mota;
-			spct.TrangThai = trangthai;
+			if(soluong <= 0)
+			{
+				spct.TrangThai = 0;
+			}
 			return iresposspct.UpdateItem(spct);
+
 		}
 
 		// DELETE api/<SanPhamChiTietController>/5
-		[HttpDelete("Delete-SPCT")]
+		[HttpDelete("{Delete-SPCT}")]
 		public bool DeleteSPCT(Guid idspct)
 		{
 			SanPhamChiTiet spct = iresposspct.GetAll().FirstOrDefault(c => c.IDSPCT == idspct);
-			return iresposspct.DeleteItem(spct);
+			spct.TrangThai = 0;
+			return iresposspct.UpdateItem(spct);
 		}
 	}
 }

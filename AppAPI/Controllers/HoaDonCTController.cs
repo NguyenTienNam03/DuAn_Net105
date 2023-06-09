@@ -25,18 +25,18 @@ namespace AppAPI.Controllers
             ireposhd = reposhd;
             ireposspct = reposspct;
         }
-        [HttpGet]
-        public IEnumerable<HoaDonChiTiet> GetHoaDonChiTiets()
+        [HttpGet("[action]")]
+        public IEnumerable<HoaDonChiTiet> GetAllHoaDonChiTiets()
         {
             return ireposhdct.GetAll();
         }
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
         public HoaDonChiTiet GetHoaDonChiTiets(Guid id)
         {
             return ireposhdct.GetAll().First(p => p.IDHDCT == id);
         }
 
-        [HttpPost("Create-HoaDonCT")]
+        [HttpPost("{Create-HoaDonCT}")]
 
         public bool CreateHDCT(Guid idhd, Guid idspct, decimal gia, int sl)
         {
@@ -50,7 +50,7 @@ namespace AppAPI.Controllers
             return ireposhdct.CreateNewItem(hdct);
 
         }
-        [HttpPut("Update-HoaDonCT")]
+        [HttpPut("{Update-HoaDonCT}")]
 
         public bool UpdateHDCT(Guid idhct, Guid idhd, Guid idspct, decimal gia, int sl)
         {
@@ -63,7 +63,7 @@ namespace AppAPI.Controllers
 
         }
 
-        [HttpDelete("Delete-HoaDonCT")]
+        [HttpDelete("{Delete-HoaDonCT}")]
         public bool DeleteHDCT(Guid idhct)
         {
             HoaDonChiTiet hdct = ireposhdct.GetAll().FirstOrDefault(p => p.IDHDCT == idhct);
