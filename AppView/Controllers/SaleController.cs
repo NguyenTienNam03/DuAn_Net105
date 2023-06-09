@@ -1,6 +1,7 @@
 ﻿using AppDaTa.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace AppView.Controllers
 {
@@ -11,9 +12,10 @@ namespace AppView.Controllers
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> ShowAllSale()
         {
-            string url = $"https://localhost:7119/api/Sale";
+            string url = $"https://localhost:7119/api/Sale/Getall";
             var client = new HttpClient();
             var respos = await client.GetAsync(url);
             var dataapi = await respos.Content.ReadAsStringAsync();
@@ -30,27 +32,55 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSale(Sale sale)
         {
-            return View(sale);
+            string url = $"https://localhost:7119/api/Sale/CreteSale?masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
+            var client = new HttpClient();
+            var sale1 = JsonConvert.SerializeObject(sale);
+            StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
+            var create = await client.PostAsync(url, content);
+            return RedirectToAction("ShowAllSale");
         }
         [HttpGet]
-        public async Task<IActionResult> EditSale()
+        public async Task<IActionResult> EditSale(Guid id)
         {
-            return View();
+
+            string url = $"https://localhost:7119/api/Sale/Get?id={id}";
+            var client = new HttpClient();
+            var repos = await client.GetAsync(url);
+            var datapi = await repos.Content.ReadAsStringAsync();
+            Sale sale = JsonConvert.DeserializeObject<Sale>(datapi);
+            return View(sale);
+
         }
         [HttpPost]
         public async Task<IActionResult> EditSale(Sale sale)
         {
+            string url = $"https://localhost:7119/api/Sale/EditSale?id={sale.IDSale}&masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
+		
+			var client = new HttpClient();
+            var sale1 = JsonConvert.SerializeObject(sale);
+            StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
+            var Update = await client.PutAsync(url, content);
+            return RedirectToAction("ShowAllSale");
+        }
+
+        public async Task<IActionResult> SaleDetail(Guid id)
+        {
+            string url = $"https://localhost:7119/api/Sale/Get?id={id}";
+            var client = new HttpClient();
+            var repos = await client.GetAsync(url);
+            var datapi = await repos.Content.ReadAsStringAsync();
+            Sale sale = JsonConvert.DeserializeObject<Sale>(datapi);
             return View(sale);
         }
 
-        public async Task<IActionResult> DeleteSale(Guid id)
+        public async Task<IActionResult> DeleteSale(Sale sale)
         {
-            return View();
-        }
-        [HttpGet]
-        public async Task<IActionResult> SaleDetail(Guid id)
-        {
-            return View();
+            string url = $"https://localhost:7119/api/Sale/Delete?id={sale.IDSale}";
+            var client = new HttpClient();
+            var sale1 = JsonConvert.SerializeObject(sale);
+            StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
+            var Update = await client.PutAsync(url, content);
+            return RedirectToAction("ShowAllSale");
         }
     }
 }

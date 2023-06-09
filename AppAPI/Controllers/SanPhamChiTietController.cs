@@ -66,13 +66,13 @@ namespace AppAPI.Controllers
 						   TheLoai = h.TenTheLoai,
 						   GiaTriSale = f.GiaTriSale,
 						   GiaBan = a.GiaBan,
-						   GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale / 100),
+						   GiaSale = a.GiaSale,
 						   Soluong = a.SoLuong,
 						   Anh = a.Anh,
 						   MoTa = a.MoTa,
 						   TrangThai = a.TrangThai,
 					   };
-			if(Spct.Any(c => c.Soluong > 0))
+			if(Spct.Any(c => c.Soluong > 0) == true)
 			{
 				return Spct.ToList();
 			} else
@@ -104,7 +104,7 @@ namespace AppAPI.Controllers
 							   TheLoai = h.TenTheLoai,
 							   GiaTriSale = f.GiaTriSale,
 							   GiaBan = a.GiaBan,
-							   GiaSale = a.GiaBan - (a.GiaBan * f.GiaTriSale / 100),
+							   GiaSale = a.GiaSale,
 							   Soluong = a.SoLuong,
 							   Anh = a.Anh,
 							   MoTa = a.MoTa,

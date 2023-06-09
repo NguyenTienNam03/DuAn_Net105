@@ -2,6 +2,7 @@
 using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -38,19 +39,19 @@ namespace AppView.Controllers
 			ViewBag.Color = new SelectList(_context.maus.ToList().OrderBy(c => c.Mausac), "IDMau", "Mausac");
 			ViewBag.SanPham = new SelectList(_context.sanPhams.ToList().OrderBy(c => c.TenSP), "IdSP", "TenSP");
 			ViewBag.Size = new SelectList(_context.sizes.ToList().OrderBy(c => c.SizeGiay), "IDSize", "SizeGiay");
-			ViewBag.Sale = new SelectList(_context.Sale.ToList().OrderBy(c => c.GiaTriSale), "IDSale", "GiaTriSale");
+			ViewBag.Sale = new SelectList(_context.Sale.ToList().Where(c => c.TrangThai == 1).OrderBy(c => c.GiaTriSale), "IDSale", "GiaTriSale");
 			ViewBag.Hang = new SelectList(_context.hangSXs.ToList().OrderBy(c => c.TenHangSX), "IDHangSx", "TenHangSX");
 			ViewBag.TheLoai = new SelectList(_context.theLoai.ToList().OrderBy(c => c.TenTheLoai), "IDTheLoai", "TenTheLoai");
 			return View();
         }
         [HttpPost]
-        public IActionResult CreateProductDetail(SanPhamChiTiet spct)
+        public async Task< IActionResult> CreateProductDetail(SanPhamChiTiet spct)
         {
             string url = $"https://localhost:7119/api/SanPhamChiTiet/Create-spct?idms={spct.IDMau}&idsize={spct.IDSize}&idsp={spct.IDSP}&idtl={spct.IDTheLoai}&idhangsx={spct.IDHang}&idsale={spct.IDSale}&giaban={spct.GiaBan}&soluong={spct.SoLuong}&anh={spct.Anh}&mota={spct.MoTa}\r\n";
             var spct1 = JsonConvert.SerializeObject(spct);
             var client = new HttpClient();
             StringContent content = new StringContent(spct1 ,Encoding.UTF8, "application/json");
-            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+            HttpResponseMessage repons = await client.PostAsync(url, content);
 
 			return RedirectToAction("ShowAllSPCT");
         }
@@ -206,6 +207,19 @@ namespace AppView.Controllers
             var httpClient = new HttpClient();
             var response = await httpClient.DeleteAsync(Url);
             return RedirectToAction("GetAllSanPham");
+        }
+       
+        public IActionResult ThemVaoGioHang(GioHangChiTiet spct , Guid id)
+        {
+            string url = $"https://localhost:7119/api/GioHangCT/1?idgh=305f3d5a-3cf3-4af0-a4d7-807063b6ead0&idspct={id}";
+            spct.IDSPCT = id;
+            var data = JsonConvert.SerializeObject(spct);
+            var client = new HttpClient();
+
+			StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+			HttpResponseMessage repons = client.PostAsync(url, content).Result;
+
+			return RedirectToAction("GioHangCT" ,"Account");
         }
     }
 }

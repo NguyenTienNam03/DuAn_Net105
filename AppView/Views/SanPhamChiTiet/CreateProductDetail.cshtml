@@ -22,7 +22,7 @@
 				<div class="col-3">
 					<label asp-for="IDSP" class="control-label"></label>
 				</div>
-				<div class="col-9">
+				<div class="col-9" style="width:500px; height:30px;">
 					@Html.DropDownList("IDSP", ViewBag.SanPham as IEnumerable<SelectListItem>, "", null)
 					@Html.ValidationMessageFor(model => model.IDSP, "", new { @class = "text-danger" })
 				</div>

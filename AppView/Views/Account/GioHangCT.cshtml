@@ -1,0 +1,86 @@
+﻿@model IEnumerable<AppDaTa.Models.GioHangChiTiet>
+
+@{
+	ViewData["Title"] = "GioHangCT";
+	
+}
+
+<h1>GioHangCT</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+			@Html.DisplayNameFor(model => model.IDGHCT)
+			</th>
+			@*<th>
+			@Html.DisplayNameFor(model => model.IDGH)
+			</th>*@
+			<th>
+				@Html.DisplayNameFor(model => model.SanPhamCT.IDSPCT)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SanPhamCT.Anh)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Gia)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SoLuong)
+			</th>
+			<th>
+				<span>Thành Tiền</span>
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				@{
+					double thanhtien = 0;
+					thanhtien = (double)(item.SoLuong * item.Gia);
+				}
+				<td>
+			@Html.DisplayFor(modelItem => item.IDGHCT)
+			</td>
+			@*<td>
+			@Html.DisplayFor(modelItem => item.IDGH)
+			</td>*@
+				@*<td>
+					@foreach (var spcimodel in  ViewBag.lstspctmodel)
+					{
+						if (item.IDSPCT == spcimodel.Id)
+						{
+							<span>@spcimodel.TenSanPham</span>
+						}
+					}
+				</td>*@
+				<td>
+					@Html.DisplayFor(modelItem => item.IDSPCT)
+				</td>
+				<td>
+					@Html.DisplayNameFor(model => model.SanPhamCT.Anh)
+				</td>
+				<td>
+					<span>@(item.Gia.ToString("n0")) $</span>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SoLuong)
+				</td>
+				<td>
+					<span>@(thanhtien.ToString("n0")) $</span>
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Delete", "DeleteItem", new { id = item.IDGHCT })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -55,8 +55,6 @@ namespace AppAPI.Controllers
             user.Email = email;
             user.TrangThai = 1;
             user.DiaChi = diachi;
-
-
             return ireposUser.CreateNewItem(user);
         }
 

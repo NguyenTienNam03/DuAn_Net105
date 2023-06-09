@@ -1,6 +1,7 @@
 ﻿using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
+using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,6 +16,7 @@ namespace AppAPI.Controllers
         private IAllRepositories<GioHang> ireposGH;
         private IAllRepositories<SanPhamChiTiet> ireposSPCT;
         private QLBG_Context context = new QLBG_Context();
+        private List<SanPhamChiTietViewModels> _lstspct;
         public GioHangCTController()
         {
             AllRepositories<GioHangChiTiet> reposGHCT = new AllRepositories<GioHangChiTiet>(context, context.gioHangCTs);
@@ -22,6 +24,7 @@ namespace AppAPI.Controllers
             AllRepositories<SanPhamChiTiet> reposSPCT = new AllRepositories<SanPhamChiTiet>(context, context.sanPhamCTs);
             ireposGHCT = reposGHCT;
             ireposSPCT = reposSPCT;
+            _lstspct = new List<SanPhamChiTietViewModels>();
             ireposGH = reposGH;
         }
         // GET: api/<GioHangCTController>
@@ -58,7 +61,7 @@ namespace AppAPI.Controllers
                 ghct.IDGHCT = Guid.NewGuid();
                 ghct.IDGH = ireposGH.GetAll().First(ghct => ghct.IDGioHang == idgh).IDGioHang;
                 ghct.IDSPCT = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).IDSPCT;
-                ghct.Gia = ireposSPCT.GetAll().First(ghct => ghct.IDSPCT == idspct).GiaSale;
+                ghct.Gia = ireposSPCT.GetAll().First(c => c.IDSPCT == idspct).GiaSale;
                 ghct.SoLuong = 1;
                 return ireposGHCT.CreateNewItem(ghct);
             }

@@ -34,13 +34,13 @@ namespace AppAPI.Controllers
         {
             return ireposgiohang.GetAll().First(c => c.IDGioHang == id);
         }
-
+        
         // POST api/<GioHangController>
         [HttpPost("{Create-giohang}")]
         public bool CreateGioHang(Guid id, string description)
         {
             GioHang gioHang = new GioHang();
-            //gioHang.IDGioHang = ireposuser.GetAll().First(c => c.IDUser == id); // lay id nguoi dung dang nhap
+            gioHang.IDGioHang = ireposuser.GetAll().FirstOrDefault(c => c.IDUser == id).IDUser;
             gioHang.Description = description;
             return ireposgiohang.CreateNewItem(gioHang);
         }

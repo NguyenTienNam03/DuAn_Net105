@@ -12,9 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Id)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.TenSanPham)
             </th>
@@ -57,9 +57,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Id)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.TenSanPham)
             </td>
@@ -94,7 +94,14 @@
                 @Html.DisplayFor(modelItem => item.MoTa)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
+                    @if (item.Soluong > 0)
+                    {
+                        <span>Còn hàng</span>
+                    }
+                    else
+                    {
+                        <span>Hết hàng</span>
+                    }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

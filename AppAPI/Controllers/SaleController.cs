@@ -43,30 +43,60 @@ namespace AppAPI.Controllers
             sale.NgayBatDau = nbd;
             sale.NgayKetThuc = nkt;
             sale.GiaTriSale = giatrisale;
-            sale.TrangThai = 1;
+            if (nbd.Date <= DateTime.Now.Date && DateTime.Now.Date <= nkt.Date)
+            {
+                sale.TrangThai = 1;
+            }
+            else
+            {
+                sale.TrangThai = 0;
+            }
             return irepossale.CreateNewItem(sale);
         }
 
+        [HttpPut("[action]")]
+        public IEnumerable<Sale> Refresh()
+        {
+            foreach(var item in irepossale.GetAll())
+            {
+                if(item.NgayBatDau.Date <= DateTime.Now.Date && DateTime.Now.Date <= item.NgayKetThuc.Date)
+                {
+                    item.TrangThai = 1;
+                } else
+                {
+                    item.TrangThai = 0;
+                }
+                irepossale.UpdateItem(item);
+            }
+            return irepossale.GetAll().OrderBy(c => c.GiaTriSale);
+        }
         // PUT api/<SaleController>/5
         [HttpPut("[action]")]
-        public bool EditSale(Guid id, string masale, DateTime nbd, DateTime nkt, int giatrisale, int trangthai)
+        public bool EditSale(Guid id, string masale, DateTime nbd, DateTime nkt, int giatrisale)
         {
             Sale sale = irepossale.GetAll().First(c => c.IDSale == id);
             sale.MaSale = masale;
             sale.NgayBatDau = nbd;
             sale.NgayKetThuc = nkt;
             sale.GiaTriSale = giatrisale;
-            sale.TrangThai = trangthai;
-
+            if (nbd.Date <= DateTime.Now.Date && DateTime.Now.Date <= nkt.Date)
+            { 
+                sale.TrangThai = 1;
+            }
+            else
+            {
+                sale.TrangThai = 0;
+            }
             return irepossale.UpdateItem(sale);
         }
 
         // DELETE api/<SaleController>/5
-        [HttpDelete("[action]")]
+        [HttpPut("[action]")]
         public bool Delete(Guid id)
         {
             Sale sale = irepossale.GetAll().First(c => c.IDSale == id);
-            return irepossale.DeleteItem(sale);
+            sale.TrangThai = 0;
+            return irepossale.UpdateItem(sale);
         }
     }
 }

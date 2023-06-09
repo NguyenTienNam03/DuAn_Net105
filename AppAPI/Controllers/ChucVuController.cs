@@ -56,11 +56,12 @@ namespace AppAPI.Controllers
         }
 
         // DELETE api/<ChucVuContoller>/5
-        [HttpDelete("{Delete-Chucvu}")]
+        [HttpPut("{Delete-Chucvu}")]
         public bool Delete(Guid id)
         {
-            ChucVu chucVu = ireposchucvu.GetAll().First(c => c.IDRole == id);
-            return ireposchucvu.DeleteItem(chucVu);
+            ChucVu vcs = ireposchucvu.GetAll().First(c => c.IDRole == id);
+            vcs.TrangThai = 0;
+            return ireposchucvu.UpdateItem(vcs);
         }
     }
 }
