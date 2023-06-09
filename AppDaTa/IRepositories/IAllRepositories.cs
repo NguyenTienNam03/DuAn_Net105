@@ -12,5 +12,6 @@ namespace AppDaTa.IRepositories
         public bool CreateNewItem (T item);
         public bool DeleteItem (T item);
         public bool UpdateItem (T item);
+        
     }
 }
