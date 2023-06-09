@@ -68,5 +68,6 @@ namespace AppAPI.Controllers
             b.TrangThai = TrangThai;
             return _repos.UpdateItem(b);
         }
+        
     }
 }
