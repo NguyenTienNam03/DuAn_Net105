@@ -57,7 +57,7 @@ namespace AppView.Controllers
             string data = JsonConvert.SerializeObject(a);
             string url = $"https://localhost:7119/api/Voucher/CreateVoucher?MaVoucher={a.MaVoucher}&NgayTao={a.NgayTao}&" +
                 $"Dieukien={a.Dieukien}&NgayBatDau={a.NgayBatDau}&" +
-                $"NgayKetThuc={a.NgayKetThuc}&GiaTriVoucher={a.GiaTriVoucher}&Soluong={a.Soluong}&TrangThai={a.TrangThai}";
+                $"NgayKetThuc={a.NgayKetThuc}&GiaTriVoucher={a.GiaTriVoucher}&Soluong={a.Soluong}";
 
 
             var client = new HttpClient();
@@ -71,7 +71,7 @@ namespace AppView.Controllers
             string url = $"https://localhost:7119/api/Voucher/GettByIDVoucher?id={ID}";
             var respon=  client.GetAsync(url).Result;
             string data = await respon.Content.ReadAsStringAsync();
-            var kq= JsonConvert.DeserializeObject<Voucher>(data);
+            Voucher kq= JsonConvert.DeserializeObject<Voucher>(data);
             return View(kq);
 
 
@@ -80,13 +80,10 @@ namespace AppView.Controllers
         public IActionResult EditVoucher(Voucher a1)
         {
             string data = JsonConvert.SerializeObject(a1);
-            string url = $"https://localhost:7119/api/Voucher/UpdateVoucher?" +
-                $"IDVoucher={a1.IDVoucher}&MaVoucher={a1.MaVoucher}&" +
-                $"NgayTao={a1.NgayTao}&Dieukien={a1.Dieukien}&" +
-                $"NgayBatDau={a1.NgayBatDau}&NgayKetThuc={a1.NgayKetThuc}&" +
-                $"GiaTriVoucher={a1.GiaTriVoucher}&Soluong={a1.Soluong}&TrangThai={a1.TrangThai}";
-            StringContent ct = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage respon= client.PostAsync(url,ct).Result;
+            string url = $"https://localhost:7119/api/Voucher/UpdateVoucher?IDVoucher={a1.IDVoucher}&MaVoucher={a1.MaVoucher}&NgayTao={a1.NgayTao}&Dieukien={a1.Dieukien}&NgayBatDau={a1.NgayBatDau}&NgayKetThuc={a1.NgayKetThuc}&GiaTriVoucher={a1.GiaTriVoucher}&Soluong={a1.Soluong}";
+
+			StringContent ct = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage respon= client.PutAsync(url,ct).Result;
             return RedirectToAction("GetAllVoucher");
         }
         public IActionResult DeleteVoucher(Guid a2)

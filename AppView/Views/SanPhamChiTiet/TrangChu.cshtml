@@ -1,18 +1,13 @@
 ﻿@model IEnumerable<AppDaTa.ViewModels.SanPhamChiTietViewModels>
 
 @{
-	ViewData["Title"] = "ShowAllSPCT";
+	ViewData["Title"] = "TrangChu";
 }
 
-<h1>ShowAllSPCT</h1>
+<h1>TrangChu</h1>
 
 <p>
-	<a asp-action="CreateProductDetail">Create New</a> |
-	<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="GetAllColor">Mau Sac</a> |
-	<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="GetAllSanPham">San Pham</a> 
-	<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="GetALlSize">Size</a> |
-	<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="GetAllTheLoai">TheLoai</a> |
-	<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="GetallHangSX">Hang SX</a>
+
 </p>
 <table class="table">
 	<thead>
@@ -109,12 +104,7 @@
 						<span>Hết hàng</span>
 					}
 				</td>
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("AddToCart", "ThemVaoGioHang", new { id = item.Id})
-				</td>
+
 			</tr>
 		}
 	</tbody>

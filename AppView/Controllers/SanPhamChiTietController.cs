@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
+using System.Drawing;
 using System.Text;
+using Size = AppDaTa.Models.Size;
 
 namespace AppView.Controllers
 {
@@ -13,7 +15,17 @@ namespace AppView.Controllers
         // spct , 
         private QLBG_Context _context = new QLBG_Context();
 		public SanPhamChiTietController() { }
-        [HttpGet]
+		[HttpGet]
+		public IActionResult TrangChu()
+		{
+			string url = $"https://localhost:7119/api/SanPhamChiTiet/GetSanPhamChiTiet";
+			HttpClient httpClient = new HttpClient();
+			var respons = httpClient.GetAsync(url).Result;
+			string datapi = respons.Content.ReadAsStringAsync().Result;
+			var SPCT = JsonConvert.DeserializeObject<List<SanPhamChiTietViewModels>>(datapi);
+			return View(SPCT);
+		}
+		[HttpGet]
         public IActionResult ShowAllSPCT()
         {
             string url = $"https://localhost:7119/api/SanPhamChiTiet/GetSanPhamChiTiet";
@@ -56,10 +68,11 @@ namespace AppView.Controllers
 			return RedirectToAction("ShowAllSPCT");
         }
 		
+        // MAU SAC
 		[HttpGet]
         public async Task<IActionResult> GetAllColor()
         {
-            string url = $"https://localhost:7119/api/MauSac";
+            string url = $"https://localhost:7119/api/MauSac/GetAllColor";
 
             HttpClient client = new HttpClient();
             var response = await client.GetAsync(url);
@@ -118,39 +131,16 @@ namespace AppView.Controllers
             return RedirectToAction("GetAllColor");
         }
 
+        // SAN PHAM
         [HttpGet]
-        public async Task<IActionResult> DetailColor(Guid id)
-        {
-            string Url = $"https://localhost:7119/api/MauSac/{id}";
-            var httpClient = new HttpClient(); // tao ra de call api
-
-            var response = await httpClient.GetAsync(Url); // lay du lieu tu api url 
-                                                           // lay du lieu Json tra ve API duoc call dang String
-            string apiData = await response.Content.ReadAsStringAsync();
-            // lay ket qua tra ve tu API dang JSon
-            // Doc tu string JSon vua thu duoc sang double
-            MauSac color = JsonConvert.DeserializeObject<MauSac>(apiData);
-            //ViewData["result"] = "Toc do chay trung binh cua ban la : " + col;
-            return View(color);
-        }
-        public async Task<IActionResult> DeleteColor(Guid id)
-        {
-            string Url = $"https://localhost:7119/api/MauSac/Delete-color?id={id}";
-            var httpClient = new HttpClient(); // tao ra de call api
-
-            var response = await httpClient.DeleteAsync(Url);
-
-            return RedirectToAction("GetAllColor");
-        }
-
         public async Task<IActionResult> GetAllSanPham()
         {
-            string url = $"https://localhost:7119/api/SanPham";
+            string url = $"https://localhost:7119/api/SanPham/GetAllSanPhams";
 
             HttpClient client = new HttpClient();
             var response = await client.GetAsync(url);
             string dataapi = await response.Content.ReadAsStringAsync();
-            var listSP = JsonConvert.DeserializeObject<List<MauSac>>(dataapi);
+            var listSP = JsonConvert.DeserializeObject<List<SanPham>>(dataapi);
             return View(listSP);
         }
         [HttpGet]
@@ -191,24 +181,200 @@ namespace AppView.Controllers
             HttpResponseMessage repons = client.PutAsync(url, content).Result;
             return RedirectToAction("GetAllSanPham");
         }
+
+        // Size
+
         [HttpGet]
-        public async Task<IActionResult> DetailSanPham(Guid id)
+        public async Task<IActionResult> GetALlSize()
         {
-            string Url = $"https://localhost:7119/api/SanPham/{id}";
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(Url);
+            string url = $"https://localhost:7119/api/Size/GetAll";
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(url);
+            string dataapi = await response.Content.ReadAsStringAsync();
+
+            var listsize = JsonConvert.DeserializeObject<List<Size>>(dataapi);
+
+            return View(listsize);
+        }
+        [HttpGet]
+        public IActionResult CreateSize()
+        {
+            return View();
+        }
+        [HttpPost]
+
+        public IActionResult CreateSize(Size size)
+        {
+            string data = JsonConvert.SerializeObject(size);
+            string url = $"https://localhost:7119/api/Size/1?sizegiay={size.SizeGiay}";
+
+            var client = new HttpClient();
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("GetALlSize");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateSize(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/Size/{id}";
+            var httpClient = new HttpClient(); // tao ra de call api
+
+            var response = await httpClient.GetAsync(Url); // lay du lieu tu api url 
+                                                           // lay du lieu Json tra ve API duoc call dang String
             string apiData = await response.Content.ReadAsStringAsync();
-            SanPham sp = JsonConvert.DeserializeObject<SanPham>(apiData);
-            return View(sp);
+            // lay ket qua tra ve tu API dang JSon
+            // Doc tu string JSon vua thu duoc sang double
+            Size size = JsonConvert.DeserializeObject<Size>(apiData);
+            //ViewData["result"] = "Toc do chay trung binh cua ban la : " + col;
+            return View(size);
         }
-        public async Task<IActionResult> DeleteSanPham(Guid id)
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSize(Size size)
         {
-            string Url = $"https://localhost:7119/api/MauSac/Delete-SanPham?id={id}";
-            var httpClient = new HttpClient();
-            var response = await httpClient.DeleteAsync(Url);
-            return RedirectToAction("GetAllSanPham");
+
+            string Url = $"https://localhost:7119/api/Size/1?id={size.IDSize}&sizegiay={size.SizeGiay}";
+
+            var httpClient = new HttpClient(); // tao ra de call api
+            string data = JsonConvert.SerializeObject(size);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = httpClient.PutAsync(Url, content).Result; // lỗi null
+
+            return RedirectToAction("GetALlSize");
         }
-       
+        //THE LOAI
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTheLoai()
+        {
+            string url = $"https://localhost:7119/api/controller";
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(url);
+            string dataapi = await response.Content.ReadAsStringAsync();
+
+            var listTheLoai = JsonConvert.DeserializeObject<List<TheLoai>>(dataapi);
+
+            return View(listTheLoai);
+        }
+        [HttpGet]
+        public IActionResult CreateTheLoai()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateTheLoai(TheLoai tl)
+        {
+            string data = JsonConvert.SerializeObject(tl);
+            string url = $"https://localhost:7119/api/controller/CreateTheLoai?tentheloai={tl.TenTheLoai}&mota={tl.MoTa}";
+
+            var client = new HttpClient();
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("GetAllTheLoai");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateTheLoai(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/controller/Get?id={id}";
+            var httpClient = new HttpClient(); // tao ra de call api
+
+            var response = await httpClient.GetAsync(Url); // lay du lieu tu api url 
+                                                           // lay du lieu Json tra ve API duoc call dang String
+            string apiData = await response.Content.ReadAsStringAsync();
+            // lay ket qua tra ve tu API dang JSon
+            // Doc tu string JSon vua thu duoc sang double
+            TheLoai theloai = JsonConvert.DeserializeObject<TheLoai>(apiData);
+            //ViewData["result"] = "Toc do chay trung binh cua ban la : " + col;
+            return View(theloai);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTheLoai(TheLoai tl)
+        {
+
+            string Url = $"https://localhost:7119/api/controller/UpdateTheLoai?id={tl.IDTheLoai}&theloai={tl.TenTheLoai}&mota={tl.MoTa}";
+
+            var httpClient = new HttpClient(); // tao ra de call api
+            string data = JsonConvert.SerializeObject(tl);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = httpClient.PutAsync(Url, content).Result; // lỗi null
+
+            return RedirectToAction("GetAllTheLoai");
+        }
+        //// HANG SX
+
+        [HttpGet]
+        public async Task<IActionResult> GetallHangSX()
+        {
+            string url = $"https://localhost:7119/api/HangSX/GetAll";
+
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(url);
+            string dataapi = await response.Content.ReadAsStringAsync();
+
+            var listhangsx = JsonConvert.DeserializeObject<List<HangSX>>(dataapi);
+
+            return View(listhangsx);
+        }
+        [HttpGet]
+        public IActionResult CreateHangsx()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateHangsx(HangSX hsx)
+        {
+            string data = JsonConvert.SerializeObject(hsx);
+            string url = $"https://localhost:7119/api/HangSX/CreateHangSX?tenHangSX={hsx.TenHangSX}";
+
+            var client = new HttpClient();
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("GetallHangSX");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateHangSX(Guid id)
+        {
+            string Url = $"https://localhost:7119/api/HangSX/Get?id={id}";
+            var httpClient = new HttpClient(); // tao ra de call api
+
+            var response = await httpClient.GetAsync(Url); // lay du lieu tu api url 
+                                                           // lay du lieu Json tra ve API duoc call dang String
+            string apiData = await response.Content.ReadAsStringAsync();
+            // lay ket qua tra ve tu API dang JSon
+            // Doc tu string JSon vua thu duoc sang double
+            HangSX hsx = JsonConvert.DeserializeObject<HangSX>(apiData);
+            //ViewData["result"] = "Toc do chay trung binh cua ban la : " + col;
+            return View(hsx);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateHangSX(HangSX hsx)
+        {
+
+            string Url = $"https://localhost:7119/api/HangSX/UpdateHangSX?id={hsx.IDHangSx}&tenHangSx={hsx.TenHangSX}";
+
+            var httpClient = new HttpClient(); // tao ra de call api
+            string data = JsonConvert.SerializeObject(hsx);
+
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = httpClient.PutAsync(Url, content).Result; // lỗi null
+
+            return RedirectToAction("GetallHangSX");
+        }
+
+
+        // ADDTOCART
         public IActionResult ThemVaoGioHang(GioHangChiTiet spct , Guid id)
         {
             string url = $"https://localhost:7119/api/GioHangCT/1?idgh=305f3d5a-3cf3-4af0-a4d7-807063b6ead0&idspct={id}";

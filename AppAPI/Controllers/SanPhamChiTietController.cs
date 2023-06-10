@@ -72,7 +72,7 @@ namespace AppAPI.Controllers
 						   MoTa = a.MoTa,
 						   TrangThai = a.TrangThai,
 					   };
-			if(Spct.Any(c => c.Soluong > 0) == true)
+			if(Spct.Any(c => c.Soluong > 0))
 			{
 				return Spct.ToList();
 			} else

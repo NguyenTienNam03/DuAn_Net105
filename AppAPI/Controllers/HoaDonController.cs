@@ -44,7 +44,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpPost("{Create-HoaDon}")]
-        public bool CreateHoaDon(Guid idkh, Guid idvc, int trangthai)
+        public bool CreateHoaDon(Guid idkh, Guid idvc)
         {
             var kh = ireposuser.GetAll().FirstOrDefault(c => c.IDUser == idkh);
 
@@ -52,7 +52,7 @@ namespace AppAPI.Controllers
             hoadon.IdBill = Guid.NewGuid();
             hoadon.IDKhachHang = kh.IDUser;
             hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvc).IDVoucher;
-            hoadon.MaHD = "HD" + Convert.ToString(irepos.GetAll().Where(c => c.IDKhachHang == idkh).Count() + 1);
+            hoadon.MaHD = Convert.ToString(hoadon.IdBill).Substring(0,8).ToUpper();
             hoadon.SoLuong = 0;
             hoadon.Gia = 0;
             hoadon.NgayTao = DateTime.Now;
@@ -61,13 +61,13 @@ namespace AppAPI.Controllers
             hoadon.TenNguoiNhan = kh.TenKhachHang;
             hoadon.SDTNguoiNhan = kh.SDT;
             hoadon.DiaChiNguoiNhan = kh.DiaChi;
-            hoadon.TrangThai = trangthai;
+            hoadon.TrangThai = 1;
             return irepos.CreateNewItem(hoadon);
 
         }
 
         [HttpPut("{Update-HoaDon}")]
-        public bool UpdateHoadon(Guid idhoadon, string tennguoinhan, string sdt, string dc, int trangthai)
+        public bool UpdateHoadon(Guid idhoadon, string tennguoinhan, string sdt, string dc)
         {
             var HDCT = ireposhdct.GetAll().FirstOrDefault(c => c.IDHD == idhoadon);
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
@@ -78,7 +78,7 @@ namespace AppAPI.Controllers
                 hoadon.TenNguoiNhan = tennguoinhan;
                 hoadon.SDTNguoiNhan = sdt;
                 hoadon.DiaChiNguoiNhan = dc;
-                hoadon.TrangThai = trangthai;
+                hoadon.TrangThai = 1;
                 return irepos.UpdateItem(hoadon);
             }
             else
@@ -94,6 +94,5 @@ namespace AppAPI.Controllers
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
             return irepos.DeleteItem(hoadon);
         }
-
     }
 }

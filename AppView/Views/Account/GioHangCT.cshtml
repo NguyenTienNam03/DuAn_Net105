@@ -70,15 +70,20 @@
 					<span>@(item.Gia.ToString("n0")) $</span>
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.SoLuong)
+				<td>
+					<form asp-controller="Account" asp-action="UpdateQuatity" method="post">
+						<input type="hidden" name="IDSPCT" value="@item.IDSPCT" />
+						<input type="number" name="SoLuong" value="@item.SoLuong" />
+						<button type="submit" class="btn btn-primary">Cập nhật</button>
+					</form>
+
+				</td>
 				</td>
 				<td>
 					<span>@(thanhtien.ToString("n0")) $</span>
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Delete", "DeleteItem", new { id = item.IDGHCT })
+					<a href="@Url.Action("DeleteItem",new { id = item.IDGHCT})" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn btn-danger btn-sm">Xóa</a>
 				</td>
 			</tr>
 		}

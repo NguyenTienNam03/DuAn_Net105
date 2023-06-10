@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AppDaTa.Models.TheLoai>
+
+@{
+    ViewData["Title"] = "GetAllTheLoai";
+}
+
+<h1>GetAllTheLoai</h1>
+
+<p>
+   
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDTheLoai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenTheLoai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDTheLoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenTheLoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoTa)
+            </td>
+            <td>
+                 <a asp-action="CreateTheLoai">Create New</a>
+                @Html.ActionLink("Edit", "UpdateTheLoai", new { id=item.IDTheLoai }) |
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -47,13 +47,21 @@ namespace AppAPI.Controllers
         {
             if (ireposGHCT.GetAll().Any(c => c.IDSPCT == idspct) == true)
             {
-                var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).IDSPCT;
+                var idspct1 = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct);
                 GioHangChiTiet ghct = ireposGHCT.GetAll().First(ghct => ghct.IDSPCT == idspct);
                 if (ghct != null)
                 {
-                    ghct.SoLuong++;
-                }
-                return ireposGHCT.UpdateItem(ghct);
+					if (idspct1.SoLuong <= ghct.SoLuong)
+					{
+						ghct.SoLuong = idspct1.SoLuong;
+
+					} else
+                    {
+						ghct.SoLuong++;
+					}
+					return ireposGHCT.UpdateItem(ghct);
+				}  
+               return true;
             }
             else
             {
@@ -71,14 +79,16 @@ namespace AppAPI.Controllers
         {
             var soluongton = ireposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == idspct).SoLuong;
             GioHangChiTiet ghct = ireposGHCT.GetAll().FirstOrDefault(ghct => ghct.IDSPCT == idspct);
-            if (soluongton > 0 && soluongton <= soluong)
+            if (soluongton > 0 && soluongton >= soluong)
             {
-                if (ghct != null)
-                {
                     ghct.SoLuong = soluong;
-                }
+				    return ireposGHCT.UpdateItem(ghct);
+			}
+            else
+            {
+                return false;
             }
-            return ireposGHCT.UpdateItem(ghct);
+            
         }
         [HttpDelete("[action]")]
         public bool DeleteGHCT(Guid id)

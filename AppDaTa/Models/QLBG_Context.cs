@@ -33,8 +33,9 @@ namespace AppDaTa.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-OTK64O4\SQLEXPRESS;Initial Catalog=DuAn_Net1051;trusted_connection=true");
-        }
+            //optionsBuilder.UseSqlServer(@"Data Source=WINDOWS-10;Initial Catalog=DuAn_Net1051;trusted_connection=true");
+			optionsBuilder.UseSqlServer(@"Data Source=WINDOWS-10;Initial Catalog=DuAn_Net105;Integrated Security=True"); // T.Nam
+		}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

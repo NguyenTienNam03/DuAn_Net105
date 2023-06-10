@@ -7,7 +7,7 @@
 <h1>GetAllColor</h1>
 
 <p>
-    <a asp-action="CreateColor">Create New</a>
+    
 </p>
 <table class="table">
     <thead>
@@ -31,9 +31,8 @@
                 @Html.DisplayFor(modelItem => item.Mausac)
             </td>
             <td>
-                    @Html.ActionLink("Edit", "UpdateMauSac", new { id = item.IDMau }) |
-                    @Html.ActionLink("Details", "DetailColor", new { id = item.IDMau }) |
-                    @Html.ActionLink("Delete", "DeleteColor", new { id = item.IDMau })
+                    <a asp-action="CreateColor">Create New</a> |
+                    @Html.ActionLink("Edit", "UpdateMauSac", new { id = item.IDMau }) 
             </td>
         </tr>
 }

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AppDaTa.Models.HangSX>
+
+@{
+    ViewData["Title"] = "GetallHangSX";
+}
+
+<h1>GetallHangSX</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDHangSx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenHangSX)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDHangSx)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenHangSX)
+            </td>
+            <td>
+                    <a asp-action="CreateHangsx">Create New</a>
+                    @Html.ActionLink("Edit", "UpdateHangSX", new { id = item.IDHangSx }) |
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

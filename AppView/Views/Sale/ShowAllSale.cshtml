@@ -1,71 +1,73 @@
 ﻿@model IEnumerable<AppDaTa.Models.Sale>
 
 @{
-    ViewData["Title"] = "ShowAllSale";
+	ViewData["Title"] = "ShowAllSale";
 }
 
 <h1>ShowAllSale</h1>
 
 <p>
-    <a asp-action="CreateSale">Create New</a>
+	<a asp-action="CreateSale">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IDSale)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaSale)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayBatDau)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayKetThuc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GiaTriSale)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IDSale)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaSale)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayBatDau)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayKetThuc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GiaTriSale)
-            </td>
-            <td>
-                    @if (item.NgayBatDau.Date <= DateTime.Now.Date && DateTime.Now.Date <= item.NgayKetThuc.Date)
-                    {
-                        <span>Hoạt động</span>
-                    } else
-                    {
-                        <span>Không hoạt động</span>
-                    }
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "EditSale", new {  id=item.IDSale }) |
-                    @Html.ActionLink("Details", "SaleDetail", new { id=item.IDSale }) |
-                    @Html.ActionLink("Delete", "DeleteSale", new { id=item.IDSale })
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.IDSale)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.MaSale)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NgayBatDau)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NgayKetThuc)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.GiaTriSale)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrangThai)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.IDSale)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.MaSale)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NgayBatDau)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NgayKetThuc)
+				</td>
+				<td>
+					<span>@Html.DisplayFor(modelItem => item.GiaTriSale) %</span>
+				</td>
+				<td>
+					@if (item.NgayBatDau.Date <= DateTime.Now.Date && DateTime.Now.Date <= item.NgayKetThuc.Date)
+					{
+						<span>Hoạt động</span>
+					}
+					else
+					{
+						<span>Không hoạt động</span>
+					}
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "EditSale", new {  id=item.IDSale }) |
+					@Html.ActionLink("Details", "SaleDetail", new { id=item.IDSale }) |
+					@Html.ActionLink("Delete", "DeleteSale", new { id=item.IDSale })
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

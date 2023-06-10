@@ -14,7 +14,7 @@
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="SanPhamChiTiet" asp-action="ShowAllSPCT">AppView</a>
+				<a class="navbar-brand" asp-area="" asp-controller="SanPhamChiTiet" asp-action="TrangChu">AppView</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
 	<div class="row">
 		<aside id="sidebar" class="sidebar col-2" style="background-color:white;">
 			<div class="dropdown" style="margin-left:30px; padding:10px;line-height:15px;">
-				<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="ShowAllSPCT">
+				<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="TrangChu">
 					<button type="button" class="btn" style="font-size: 20px;color:black;"><i class='fas fa-home' style='font-size:24px; padding-right: 20px;'></i>Trang chủ</button>
 				</a>
 			</div>
@@ -70,10 +70,10 @@
 					<div id="collapseThree" class="collapse" data-bs-parent="#accordion">
 						<div class="list-group" style="margin-left:30px; padding:10px;line-height:15px;">
 							<a asp-area="" asp-controller="SanPhamChiTiet" asp-action="ShowAllSPCT" class="list-group-item">Quản lý sản phẩm</a>
-							<a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item">Quản lý người dùng </a>
+							<a asp-area="" asp-controller="NguoiDung" asp-action="GetAllKH" class="list-group-item">Quản lý người dùng </a>
 							<a asp-area="" asp-controller="Voucher" asp-action="GetAllVoucher" class="list-group-item">Quản lý Voucher</a>
 							<a asp-area="" asp-controller="Sale" asp-action="ShowAllSale" class="list-group-item">Sản phẩm Sale</a>
-							<a asp-area="" asp-controller="Home" asp-action="Privacy" class="list-group-item">Hoá Đơn</a>
+							<a asp-area="" asp-controller="Account" asp-action="GetAllBill" class="list-group-item">Hoá Đơn</a>
 						</div>
 					</div>
 				</div>
