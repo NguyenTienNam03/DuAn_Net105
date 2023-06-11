@@ -35,7 +35,7 @@ namespace AppAPI.Controllers
         [HttpGet("[action]")]
         public IEnumerable<HoaDon> GetAllHoaDons()
         {
-            return irepos.GetAll();
+            return irepos.GetAll().OrderByDescending(c => c.NgayTao);
         }
         [HttpGet("[action]")]
         public HoaDon GetHoaDons(Guid id)
@@ -64,14 +64,21 @@ namespace AppAPI.Controllers
             hoadon.TrangThai = 1;
             return irepos.CreateNewItem(hoadon);
 
-        }
 
+
+        }
+        [HttpGet("[action]")]
+        public HoaDon Lay1GiaTri()
+        {
+            var giatridautien = irepos.GetAll().OrderByDescending(c => c.NgayTao).First();
+            return  giatridautien;
+        }
         [HttpPut("{Update-HoaDon}")]
         public bool UpdateHoadon(Guid idhoadon, string tennguoinhan, string sdt, string dc)
         {
             var HDCT = ireposhdct.GetAll().FirstOrDefault(c => c.IDHD == idhoadon);
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
-            if (HDCT.IDHD == hoadon.IdBill)
+            if (hoadon.IdBill == idhoadon)
             {
                 hoadon.SoLuong = ireposhdct.GetAll().Sum(c => c.SoLuong);
                 hoadon.Gia = ireposhdct.GetAll().Sum(c => c.SoLuong * c.Gia);

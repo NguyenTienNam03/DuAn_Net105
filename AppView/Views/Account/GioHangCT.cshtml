@@ -2,6 +2,7 @@
 
 @{
 	ViewData["Title"] = "GioHangCT";
+	var id = ViewBag.IDUser;
 	
 }
 
@@ -87,5 +88,10 @@
 				</td>
 			</tr>
 		}
+		<hr />
+	<td>
+		@*<a href="@Url.Action("CreateBill")" onclick="return confirm('Bạn có muốn thanh toán không?');" class="btn btn-success btn-sm">Thanh toán</a>*@
+		<a asp-action="CreateBill">Create New</a> |
+	</td>
 	</tbody>
 </table>

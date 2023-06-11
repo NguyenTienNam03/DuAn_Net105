@@ -104,6 +104,9 @@
 						<span>Hết hàng</span>
 					}
 				</td>
+				<td>
+					@Html.ActionLink("AddToCart", "ThemVaoGioHang", new { id = item.Id})
+				</td>
 
 			</tr>
 		}
