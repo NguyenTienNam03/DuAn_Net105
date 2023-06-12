@@ -31,9 +31,9 @@ namespace AppAPI.Controllers
             return ireposhdct.GetAll();
         }
         [HttpGet("[action]")]
-        public HoaDonChiTiet GetHoaDonChiTiets(Guid id)
+        public IEnumerable<HoaDonChiTiet> GetHoaDonChiTiets(Guid id)
         {
-            return ireposhdct.GetAll().First(p => p.IDHDCT == id);
+            return ireposhdct.GetAll().Where(p => p.IDHD == id).ToList();
         }
 
         [HttpPost("{Create-HoaDonCT}")]

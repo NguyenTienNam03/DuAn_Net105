@@ -67,9 +67,36 @@ namespace AppView.Controllers
 
 			return RedirectToAction("ShowAllSPCT");
         }
-		
+        [HttpGet]
+        public async Task<IActionResult> UpdateProDuctDetail(Guid id)
+        {
+            ViewBag.Color = new SelectList(_context.maus.ToList().OrderBy(c => c.Mausac), "IDMau", "Mausac");
+            ViewBag.SanPham = new SelectList(_context.sanPhams.ToList().OrderBy(c => c.TenSP), "IdSP", "TenSP");
+            ViewBag.Size = new SelectList(_context.sizes.ToList().OrderBy(c => c.SizeGiay), "IDSize", "SizeGiay");
+            ViewBag.Sale = new SelectList(_context.Sale.ToList().Where(c => c.TrangThai == 1).OrderBy(c => c.GiaTriSale), "IDSale", "GiaTriSale");
+            ViewBag.Hang = new SelectList(_context.hangSXs.ToList().OrderBy(c => c.TenHangSX), "IDHangSx", "TenHangSX");
+            ViewBag.TheLoai = new SelectList(_context.theLoai.ToList().OrderBy(c => c.TenTheLoai), "IDTheLoai", "TenTheLoai");
+            string url = $"https://localhost:7119/api/SanPhamChiTiet/{id}";
+            var client = new HttpClient();
+            var response = await client.GetAsync(url);
+            var detail = await response.Content.ReadAsStringAsync();
+            SanPhamChiTiet spct = JsonConvert.DeserializeObject<SanPhamChiTiet>(detail);
+            return View(spct);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProDuctDetail(SanPhamChiTiet spct)
+        {
+            string url = $"https://localhost:7119/api/SanPhamChiTiet/1?idspct={spct.IDSPCT}&idms={spct.IDMau}&idsize={spct.IDSize}&idsp={spct.IDSP}&idtl={spct.IDTheLoai}&idhangsx={spct.IDHang}&idsale={spct.IDSale}&giaban={spct.GiaBan}&soluong={spct.SoLuong}&anh={spct.Anh}&mota={spct.MoTa}&trangthai={spct.TrangThai}";
+            var spct1 = JsonConvert.SerializeObject(spct);
+            var client = new HttpClient();
+            StringContent content = new StringContent(spct1, Encoding.UTF8, "application/json");
+            HttpResponseMessage repons = await client.PutAsync(url, content);
+
+            return RedirectToAction("ShowAllSPCT");
+        }
+
         // MAU SAC
-		[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> GetAllColor()
         {
             string url = $"https://localhost:7119/api/MauSac/GetAllColor";

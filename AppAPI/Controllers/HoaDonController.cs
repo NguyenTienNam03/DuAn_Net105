@@ -12,6 +12,7 @@ namespace AppAPI.Controllers
     public class HoaDonController : Controller
     {
         private IAllRepositories<HoaDon> irepos;
+        private IAllRepositories<GioHangChiTiet> ireposghct;
         private IAllRepositories<HoaDonChiTiet> ireposhdct;
         private IAllRepositories<SanPhamChiTiet> IreposSPCT;
         private IAllRepositories<NguoiDung> ireposuser;
@@ -24,10 +25,11 @@ namespace AppAPI.Controllers
             AllRepositories<NguoiDung> reposuser = new AllRepositories<NguoiDung>(context, context.nguoiDungs);
             AllRepositories<Voucher> reposvoucher = new AllRepositories<Voucher>(context, context.voucher);
             AllRepositories<SanPhamChiTiet> reposSPCT = new AllRepositories<SanPhamChiTiet>(context, context.sanPhamCTs);
-
+            AllRepositories<GioHangChiTiet> reposghct = new AllRepositories<GioHangChiTiet>(context, context.gioHangCTs);
             IreposSPCT = reposSPCT;
             ireposhdct = reposhdct;
             irepos = repos;
+            ireposghct = reposghct;
             ireposuser = reposuser;
             ireposvoucher = reposvoucher;
         }
@@ -47,25 +49,61 @@ namespace AppAPI.Controllers
         public bool CreateHoaDon(Guid idkh, Guid idvc)
         {
             var kh = ireposuser.GetAll().FirstOrDefault(c => c.IDUser == idkh);
+            if(kh.IDUser != null)
+            {
+                HoaDon hoadon = new HoaDon();
+                hoadon.IdBill = Guid.NewGuid();
+                hoadon.IDKhachHang = kh.IDUser;
+                hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvc).IDVoucher;
+                hoadon.MaHD = Convert.ToString(hoadon.IdBill).Substring(0, 8).ToUpper();
+                hoadon.SoLuong = 0;
+                hoadon.Gia = 0;
+                hoadon.NgayTao = DateTime.Now;
+                hoadon.NgayNhan = DateTime.Now.AddDays(4);
+                hoadon.NgayShip = DateTime.Now.AddDays(1);
+                hoadon.TenNguoiNhan = kh.TenKhachHang;
+                hoadon.SDTNguoiNhan = kh.SDT;
+                hoadon.DiaChiNguoiNhan = kh.DiaChi;
+                hoadon.TrangThai = 1;
+               
+                irepos.CreateNewItem(hoadon);
+                
+                var cartdetail = ireposghct.GetAll().Where(c => c.IDGH == kh.IDUser).ToList();
+                foreach(var item in cartdetail)
+                {
+                    HoaDonChiTiet hdct = new HoaDonChiTiet()
+                    {
+                        IDHDCT = Guid.NewGuid(),
+                        IDHD = hoadon.IdBill,
+                        IDSPCT = item.IDSPCT,
+                        SoLuong = item.SoLuong,
+                        Gia = item.Gia
+                    };
+                    ireposhdct.CreateNewItem(hdct);
 
-            HoaDon hoadon = new HoaDon();
-            hoadon.IdBill = Guid.NewGuid();
-            hoadon.IDKhachHang = kh.IDUser;
-            hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvc).IDVoucher;
-            hoadon.MaHD = Convert.ToString(hoadon.IdBill).Substring(0,8).ToUpper();
-            hoadon.SoLuong = 0;
-            hoadon.Gia = 0;
-            hoadon.NgayTao = DateTime.Now;
-            hoadon.NgayNhan = DateTime.Now.AddDays(4);
-            hoadon.NgayShip = DateTime.Now.AddDays(1);
-            hoadon.TenNguoiNhan = kh.TenKhachHang;
-            hoadon.SDTNguoiNhan = kh.SDT;
-            hoadon.DiaChiNguoiNhan = kh.DiaChi;
-            hoadon.TrangThai = 1;
-            return irepos.CreateNewItem(hoadon);
-
-
-
+                    ireposghct.DeleteItemByID(item.IDGHCT);
+                }
+                var hdct1 = ireposhdct.GetAll().Where(c => c.IDHD == hoadon.IdBill);
+                HoaDon updatehoadon = irepos.GetAll().FirstOrDefault(c => c.IdBill == hoadon.IdBill);
+                updatehoadon.IdBill = hoadon.IdBill;
+                updatehoadon.IDKhachHang = hoadon.IDKhachHang;
+                updatehoadon.IDVoucher = hoadon.IDVoucher;
+                updatehoadon.MaHD = hoadon.MaHD;
+                updatehoadon.SoLuong = hdct1.Sum(c => c.SoLuong);
+                updatehoadon.Gia = hdct1.Sum(c => c.SoLuong * c.Gia);
+                updatehoadon.NgayTao = hoadon.NgayTao;
+                updatehoadon.NgayNhan = hoadon.NgayNhan;
+                updatehoadon.NgayShip = hoadon.NgayShip;
+                updatehoadon.TenNguoiNhan = hoadon.TenNguoiNhan;
+                updatehoadon.SDTNguoiNhan = hoadon.SDTNguoiNhan;
+                updatehoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
+                updatehoadon.TrangThai = hoadon.TrangThai;
+                return irepos.UpdateItem(updatehoadon);
+            }
+            else
+            {
+                return false;
+            }
         }
         [HttpGet("[action]")]
         public HoaDon Lay1GiaTri()
@@ -80,8 +118,15 @@ namespace AppAPI.Controllers
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
             if (hoadon.IdBill == idhoadon)
             {
-                hoadon.SoLuong = ireposhdct.GetAll().Sum(c => c.SoLuong);
-                hoadon.Gia = ireposhdct.GetAll().Sum(c => c.SoLuong * c.Gia);
+                hoadon.IdBill = hoadon.IdBill;
+                hoadon.IDKhachHang = hoadon.IDKhachHang;
+                hoadon.IDVoucher = hoadon.IDVoucher;
+                hoadon.MaHD = hoadon.MaHD;
+                hoadon.SoLuong = hoadon.SoLuong;
+                hoadon.Gia = hoadon.Gia;
+                hoadon.NgayTao = hoadon.NgayTao;
+                hoadon.NgayNhan = hoadon.NgayNhan;
+                hoadon.NgayShip = hoadon.NgayShip;
                 hoadon.TenNguoiNhan = tennguoinhan;
                 hoadon.SDTNguoiNhan = sdt;
                 hoadon.DiaChiNguoiNhan = dc;

@@ -72,7 +72,7 @@ namespace AppAPI.Controllers
 						   MoTa = a.MoTa,
 						   TrangThai = a.TrangThai,
 					   };
-			if(Spct.Any(c => c.Soluong > 0))
+			if(Spct.Any(c => c.Soluong > 0 && c.TrangThai == 1) == true)
 			{
 				return Spct.ToList();
 			} else
@@ -110,7 +110,7 @@ namespace AppAPI.Controllers
 							   MoTa = a.MoTa,
 							   TrangThai = a.TrangThai,
 						   };
-			if (Spct.Any(c => c.Soluong > 0 && c.GiaTriSale > 0))
+			if (Spct.Any(c => c.GiaTriSale > 0 && c.Soluong > 0 && c.TrangThai == 1) == true)
 			{
 				return Spct.ToList();
 			}

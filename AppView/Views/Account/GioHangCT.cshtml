@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "GioHangCT";
 	var id = ViewBag.IDUser;
+	var lst = ViewBag.lstspctmodel;
 	
 }
 
@@ -65,21 +66,23 @@
 					@Html.DisplayFor(modelItem => item.IDSPCT)
 				</td>
 				<td>
-					@Html.DisplayNameFor(model => model.SanPhamCT.Anh)
+					@foreach (var image in lst)
+					{
+						<img src="/images/@image.Anh?v=Kl_dqr9NVtnMdsM2MUg4qthUnWZm5T1fCEimBPWDNgM" style="height:50px ; width: 50px;">
+					}
 				</td>
 				<td>
 					<span>@(item.Gia.ToString("n0")) $</span>
 				</td>
-				<td>
+
 				<td>
 					<form asp-controller="Account" asp-action="UpdateQuatity" method="post">
 						<input type="hidden" name="IDSPCT" value="@item.IDSPCT" />
 						<input type="number" name="SoLuong" value="@item.SoLuong" />
 						<button type="submit" class="btn btn-primary">Cập nhật</button>
 					</form>
+				</td>
 
-				</td>
-				</td>
 				<td>
 					<span>@(thanhtien.ToString("n0")) $</span>
 				</td>

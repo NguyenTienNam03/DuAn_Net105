@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Text;
 
 namespace AppView.Controllers
@@ -19,6 +20,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GioHangCT()
         {
+            
             ViewBag.IDUser = Guid.Parse("305f3d5a-3cf3-4af0-a4d7-807063b6ead0");
             ViewBag.lstspctmodel = spctviewmodel.ToList();
             string url = $"https://localhost:7119/api/GioHangCT/GetAll";
@@ -102,11 +104,28 @@ namespace AppView.Controllers
         public async Task<IActionResult> BillDetail(Guid id)
         {
             var client = new HttpClient();
-            string urlonlybill = $"https://localhost:7119/api/HoaDon/GetHoaDons?id={id}";
+            string urlonlybill = $"https://localhost:7119/api/HoaDonCT/GetHoaDonChiTiets?id={id}";
             var repons1 = await client.GetAsync(urlonlybill);
             var dataapi1 = await repons1.Content.ReadAsStringAsync();
-            HoaDon billdt1 = JsonConvert.DeserializeObject<HoaDon>(dataapi1);
+            var billdt1 = JsonConvert.DeserializeObject<List<HoaDonChiTiet>>(dataapi1);
             return View(billdt1);
+        }
+        [HttpGet]
+
+        [HttpPost]
+        public async Task<IActionResult> Login(NguoiDung nguoiDung)
+        {
+            string url = $"https://localhost:7119/api/NguoiDung?email={nguoiDung.Email}&pass={nguoiDung.MatKhau}";
+            var client = new HttpClient();
+            var user = JsonConvert.SerializeObject(nguoiDung);
+            StringContent content = new StringContent(user,Encoding.UTF8 , "application/json");
+            var repos = await client.PostAsync(url, content);
+
+            if(repos.IsSuccessStatusCode)
+            {
+                return RedirectToAction("TrangChu", "SanPhamChiTiet");
+            }
+			return View();
         }
     }
 }

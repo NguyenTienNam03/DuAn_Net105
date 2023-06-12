@@ -70,6 +70,19 @@ namespace AppDaTa.Repositories
             }
         }
 
-        
+        public bool DeleteItemByID(Guid id)
+        {
+            try
+            {
+                var idcartdetail = _contex.gioHangCTs.FirstOrDefault(c => c.IDGHCT == id);
+                _contex.Remove(idcartdetail);
+                _contex.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

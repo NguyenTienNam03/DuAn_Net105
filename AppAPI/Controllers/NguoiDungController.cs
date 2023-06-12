@@ -2,6 +2,7 @@
 using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 
@@ -38,9 +39,6 @@ namespace AppAPI.Controllers
         {
             return ireposUser.GetAll().First(c => c.IDUser == id);
         }
-
-
-
 
         // POST api/<ValuesController>
         [HttpPost("{create-user}")]
@@ -79,6 +77,17 @@ namespace AppAPI.Controllers
         {
             NguoiDung user = ireposUser.GetAll().First(p => p.IDUser == id);
             return ireposUser.DeleteItem(user);
+        }
+        [HttpPost]
+        public bool Login(string email , string pass)
+        {
+            if(ireposUser.GetAll().Any(c => c.Email == email && c.MatKhau == pass) == true)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
         }
     }
 }

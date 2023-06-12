@@ -20,8 +20,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=SanPhamChiTiet}/{action=TrangChu}/{id?}");
-
 app.Run();
