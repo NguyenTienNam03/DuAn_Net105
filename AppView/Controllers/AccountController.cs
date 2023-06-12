@@ -53,6 +53,7 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllBill()
         {
+            
             string url = $"https://localhost:7119/api/HoaDon/GetAllHoaDons";
             var client = new HttpClient();
             var repons = await client.GetAsync(url);

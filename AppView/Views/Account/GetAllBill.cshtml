@@ -12,18 +12,19 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IdBill)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IDKhachHang)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.MaHD)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IDVoucher)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaHD)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.SoLuong)
             </th>
@@ -60,18 +61,19 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IdBill)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IDKhachHang)
-            </td>
+            </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHD)
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IDVoucher)
+                    @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaHD)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.SoLuong)
             </td>
