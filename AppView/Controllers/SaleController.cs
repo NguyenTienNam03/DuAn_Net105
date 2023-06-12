@@ -32,11 +32,11 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSale(Sale sale)
         {
-            string url = $"https://localhost:7119/api/Sale/CreteSale?masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
-		
+			
+			string url = $"https://localhost:7119/api/Sale/CreteSale?masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
 			var client = new HttpClient();
-            var sale1 = JsonConvert.SerializeObject(sale);
-            StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
+			var sale1 = JsonConvert.SerializeObject(sale);
+			StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
 			HttpResponseMessage create = await client.PostAsync(url, content);
             return RedirectToAction("ShowAllSale");
         }

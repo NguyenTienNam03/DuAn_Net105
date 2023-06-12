@@ -84,7 +84,9 @@ namespace AppAPI.Controllers
 
                     ireposghct.DeleteItemByID(item.IDGHCT);
                 }
-                var hdct1 = ireposhdct.GetAll().Where(c => c.IDHD == hoadon.IdBill);
+                var voucher = ireposvoucher.GetAll().FirstOrDefault(c => c.IDVoucher == hoadon.IDVoucher).GiaTriVoucher;
+
+				var hdct1 = ireposhdct.GetAll().Where(c => c.IDHD == hoadon.IdBill);
                 HoaDon updatehoadon = irepos.GetAll().FirstOrDefault(c => c.IdBill == hoadon.IdBill);
                 updatehoadon.IdBill = hoadon.IdBill;
                 updatehoadon.IDKhachHang = hoadon.IDKhachHang;
@@ -92,7 +94,7 @@ namespace AppAPI.Controllers
                 updatehoadon.MaHD = hoadon.MaHD;
                 updatehoadon.SoLuong = hdct1.Sum(c => c.SoLuong);
                 updatehoadon.ThanhTien = hdct1.Sum(c => c.SoLuong * c.Gia);
-                updatehoadon.TongThanhToan = updatehoadon.ThanhTien - (updatehoadon.ThanhTien - ireposvoucher.GetAll().FirstOrDefault(c => c.IDVoucher == hoadon.IDVoucher).GiaTriVoucher / 100);
+                updatehoadon.TongThanhToan = hdct1.Sum(c => c.SoLuong * c.Gia) - (hdct1.Sum(c => c.SoLuong * c.Gia) - voucher) / 100;
                 updatehoadon.NgayTao = hoadon.NgayTao;
                 updatehoadon.NgayNhan = hoadon.NgayNhan;
                 updatehoadon.NgayShip = hoadon.NgayShip;
@@ -100,7 +102,8 @@ namespace AppAPI.Controllers
                 updatehoadon.SDTNguoiNhan = hoadon.SDTNguoiNhan;
                 updatehoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
                 updatehoadon.TrangThai = hoadon.TrangThai;
-                return irepos.UpdateItem(updatehoadon);
+                irepos.UpdateItem(updatehoadon);
+                return true;
             }
             else
             {

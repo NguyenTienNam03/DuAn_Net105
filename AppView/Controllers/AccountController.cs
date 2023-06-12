@@ -78,7 +78,8 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> EditBill(HoaDon hoaDon)
         {
-            var client = new HttpClient();
+			ViewBag.voucher = new SelectList(_context.voucher.ToList().OrderBy(c => c.GiaTriVoucher), "IDVoucher", "GiaTriVoucher");
+			var client = new HttpClient();
             string UrlID = $"https://localhost:7119/api/HoaDon/Lay1GiaTri";
             var repons1 = await client.GetAsync(UrlID);
             var dataapi1 = await repons1.Content.ReadAsStringAsync();

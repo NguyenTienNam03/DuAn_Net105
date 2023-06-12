@@ -24,8 +24,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="IDVoucher" class="control-label"></label>
-                <input asp-for="IDVoucher" class="form-control" />
-                <span asp-validation-for="IDVoucher" class="text-danger"></span>
+                @Html.DropDownList("IDVoucher", ViewBag.voucher as IEnumerable<SelectListItem>, "", null)
+                @Html.ValidationMessageFor(model => model.IDVoucher, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <label asp-for="MaHD" class="control-label"></label>
