@@ -138,9 +138,6 @@ namespace AppDaTa.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<decimal>("Gia")
-                        .HasColumnType("decimal");
-
                     b.Property<Guid>("IDKhachHang")
                         .HasColumnType("uniqueidentifier");
 
@@ -170,6 +167,12 @@ namespace AppDaTa.Migrations
                     b.Property<string>("TenNguoiNhan")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("ThanhTien")
+                        .HasColumnType("decimal");
+
+                    b.Property<decimal>("TongThanhToan")
+                        .HasColumnType("decimal");
 
                     b.Property<int>("TrangThai")
                         .HasColumnType("int");

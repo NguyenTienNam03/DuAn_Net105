@@ -57,7 +57,8 @@ namespace AppAPI.Controllers
                 hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvc).IDVoucher;
                 hoadon.MaHD = Convert.ToString(hoadon.IdBill).Substring(0, 8).ToUpper();
                 hoadon.SoLuong = 0;
-                hoadon.Gia = 0;
+                hoadon.ThanhTien = 0;
+                hoadon.TongThanhToan = 0;
                 hoadon.NgayTao = DateTime.Now;
                 hoadon.NgayNhan = DateTime.Now.AddDays(4);
                 hoadon.NgayShip = DateTime.Now.AddDays(1);
@@ -90,7 +91,8 @@ namespace AppAPI.Controllers
                 updatehoadon.IDVoucher = hoadon.IDVoucher;
                 updatehoadon.MaHD = hoadon.MaHD;
                 updatehoadon.SoLuong = hdct1.Sum(c => c.SoLuong);
-                updatehoadon.Gia = hdct1.Sum(c => c.SoLuong * c.Gia);
+                updatehoadon.ThanhTien = hdct1.Sum(c => c.SoLuong * c.Gia);
+                updatehoadon.TongThanhToan = updatehoadon.ThanhTien - (updatehoadon.ThanhTien - ireposvoucher.GetAll().FirstOrDefault(c => c.IDVoucher == hoadon.IDVoucher).GiaTriVoucher / 100);
                 updatehoadon.NgayTao = hoadon.NgayTao;
                 updatehoadon.NgayNhan = hoadon.NgayNhan;
                 updatehoadon.NgayShip = hoadon.NgayShip;
@@ -112,7 +114,7 @@ namespace AppAPI.Controllers
             return  giatridautien;
         }
         [HttpPut("{Update-HoaDon}")]
-        public bool UpdateHoadon(Guid idhoadon, string tennguoinhan, string sdt, string dc)
+        public bool UpdateHoadon(Guid idhoadon, Guid idvoucher ,string tennguoinhan, string sdt, string dc)
         {
             var HDCT = ireposhdct.GetAll().FirstOrDefault(c => c.IDHD == idhoadon);
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
@@ -120,10 +122,11 @@ namespace AppAPI.Controllers
             {
                 hoadon.IdBill = hoadon.IdBill;
                 hoadon.IDKhachHang = hoadon.IDKhachHang;
-                hoadon.IDVoucher = hoadon.IDVoucher;
+                hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvoucher).IDVoucher;
                 hoadon.MaHD = hoadon.MaHD;
                 hoadon.SoLuong = hoadon.SoLuong;
-                hoadon.Gia = hoadon.Gia;
+                hoadon.ThanhTien = hoadon.ThanhTien;
+                hoadon.TongThanhToan = hoadon.ThanhTien - (hoadon.ThanhTien * ireposvoucher.GetAll().First(c => c.IDVoucher == idvoucher).GiaTriVoucher / 100);
                 hoadon.NgayTao = hoadon.NgayTao;
                 hoadon.NgayNhan = hoadon.NgayNhan;
                 hoadon.NgayShip = hoadon.NgayShip;

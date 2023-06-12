@@ -13,7 +13,8 @@ namespace AppDaTa.Models
         public Guid IDVoucher { get; set; }
         public string MaHD { get; set; }
         public int SoLuong { get; set; }
-        public decimal Gia { get; set; }
+        public decimal ThanhTien { get; set; }
+        public decimal TongThanhToan { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime NgayNhan { get; set; }
         public DateTime NgayShip { get; set; }

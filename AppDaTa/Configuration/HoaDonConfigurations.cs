@@ -18,7 +18,8 @@ namespace AppDaTa.Configuration
 
             builder.Property(x => x.MaHD).HasColumnType("varchar(15)").IsRequired();
             builder.Property(x => x.SoLuong).HasColumnType("int").IsRequired();
-            builder.Property(x => x.Gia).HasColumnType("decimal").IsRequired();
+            builder.Property(x => x.ThanhTien).HasColumnType("decimal").IsRequired();
+            builder.Property(x => x.TongThanhToan).HasColumnType("decimal").IsRequired();
             builder.Property(x => x.NgayTao).HasColumnType("DateTime").IsRequired();
             builder.Property(x => x.NgayNhan).HasColumnType("DateTime").IsRequired();
             builder.Property(x => x.NgayShip).HasColumnType("DateTime").IsRequired();

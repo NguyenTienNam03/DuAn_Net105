@@ -88,7 +88,7 @@ namespace AppView.Controllers
 
 
             // BillDetail
-            string urlbildetail = $"https://localhost:7119/api/HoaDon/1?idhoadon={id}&tennguoinhan={hoaDon.TenNguoiNhan}&sdt={hoaDon.SDTNguoiNhan}&dc={hoaDon.DiaChiNguoiNhan}";
+            string urlbildetail = $"https://localhost:7119/api/HoaDon/1?idhoadon={id}&idvoucher={hoaDon.IDVoucher}&tennguoinhan={hoaDon.TenNguoiNhan}&sdt={hoaDon.SDTNguoiNhan}&dc={hoaDon.DiaChiNguoiNhan}";
 
             var update = JsonConvert.SerializeObject(hoaDon);
             StringContent content = new StringContent (update, Encoding.UTF8, "application/json");

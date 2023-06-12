@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppDaTa.Migrations
 {
-    public partial class tet : Migration
+    public partial class DuAn_Net105 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -228,7 +228,8 @@ namespace AppDaTa.Migrations
                     IDVoucher = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MaHD = table.Column<string>(type: "varchar(15)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    Gia = table.Column<decimal>(type: "decimal", nullable: false),
+                    ThanhTien = table.Column<decimal>(type: "decimal", nullable: false),
+                    TongThanhToan = table.Column<decimal>(type: "decimal", nullable: false),
                     NgayTao = table.Column<DateTime>(type: "DateTime", nullable: false),
                     NgayNhan = table.Column<DateTime>(type: "DateTime", nullable: false),
                     NgayShip = table.Column<DateTime>(type: "DateTime", nullable: false),
