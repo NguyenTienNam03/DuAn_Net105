@@ -12,12 +12,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IDUser)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.IDRole)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.TenKhachHang)
             </th>
@@ -27,9 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.MatKhau)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.DiaChi)
             </th>
@@ -42,12 +42,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IDUser)
-            </td>
-            <td>
+            </td>*@
+           @* <td>
                 @Html.DisplayFor(modelItem => item.IDRole)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.TenKhachHang)
             </td>
@@ -57,15 +57,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.MatKhau)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.DiaChi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
-            </td>
+                    @if(item.TrangThai == 1)
+                    {
+                        <span>Hoạt động</span>
+                    }
+                    @if(item.TrangThai == 0)
+                    {
+                        <span>Không hoạt động</span>
+                    }
+                </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
