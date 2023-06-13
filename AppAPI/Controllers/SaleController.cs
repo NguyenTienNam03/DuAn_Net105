@@ -35,7 +35,7 @@ namespace AppAPI.Controllers
 
         // POST api/<SaleController>
         [HttpPost("[action]")]
-        public bool CreteSale(string masale, DateTime nbd, DateTime nkt, int giatrisale)
+        public bool CreateSale(string masale, DateTime nbd, DateTime nkt, int giatrisale)
         {
             Sale sale = new Sale();
             sale.IDSale = Guid.NewGuid();

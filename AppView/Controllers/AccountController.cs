@@ -79,7 +79,7 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> EditBill(HoaDon hoaDon)
         {
-			ViewBag.voucher = new SelectList(_context.voucher.ToList().OrderBy(c => c.GiaTriVoucher), "IDVoucher", "GiaTriVoucher");
+			ViewBag.voucher = new SelectList(_context.voucher.ToList().Where(c => c.TrangThai > 0).OrderBy(c => c.GiaTriVoucher), "IDVoucher", "GiaTriVoucher");
 			var client = new HttpClient();
             string UrlID = $"https://localhost:7119/api/HoaDon/Lay1GiaTri";
             var repons1 = await client.GetAsync(UrlID);
@@ -103,6 +103,16 @@ namespace AppView.Controllers
                 return View(billdt1);
             }
         }
+        [HttpPut]
+        public IActionResult ApDungVoucher(HoaDon hoaDon)
+        {
+            string url = $"https://localhost:7119/api/HoaDon/ApDungVoucher?idhoadon={hoaDon.IdBill}&idvoucher={hoaDon.IDVoucher}";
+            var client = new HttpClient();
+            var apdungvoucher = JsonConvert.SerializeObject(hoaDon);
+            StringContent stringContent = new StringContent(apdungvoucher, Encoding.UTF8, "application/json");
+            HttpResponseMessage ApDung = client.PutAsync(url, stringContent).Result;
+            return View("EditBill");
+        }
         public async Task<IActionResult> BillDetail(Guid id)
         {
             var client = new HttpClient();
@@ -112,8 +122,8 @@ namespace AppView.Controllers
             var billdt1 = JsonConvert.DeserializeObject<List<HoaDonChiTiet>>(dataapi1);
             return View(billdt1);
         }
-        [HttpGet]
 
+        [HttpGet]
         [HttpPost]
         public async Task<IActionResult> Login(NguoiDung nguoiDung)
         {

@@ -40,7 +40,7 @@ namespace AppAPI.Controllers
             a1.NgayKetThuc = NgayKetThuc;
             a1.GiaTriVoucher = GiaTriVoucher;
             a1.Soluong = Soluong;
-            if(a1.NgayBatDau.Date ==  DateTime.Now.Date && DateTime.Now.Date <= a1.NgayKetThuc.Date && a1.Soluong > 0)
+            if(a1.NgayBatDau.Date <=  DateTime.Now.Date && DateTime.Now.Date <= a1.NgayKetThuc.Date && a1.Soluong > 0)
             {
                 a1.TrangThai = 1;
             } else

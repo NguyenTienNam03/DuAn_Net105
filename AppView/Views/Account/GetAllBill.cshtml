@@ -71,7 +71,16 @@
                     @Html.DisplayFor(modelItem => item.MaHD)
                 </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
+                    @if(item.Voucher.GiaTriVoucher == 0)
+                    {
+                        <div style="display: none">
+                            @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
+                        </div>
+
+                    } else
+                    {
+                        @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
+                    }
             </td>
             
             <td>
@@ -102,12 +111,26 @@
                 @Html.DisplayFor(modelItem => item.DiaChiNguoiNhan)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
+                    @if(item.TrangThai == 0)
+                    {
+                        <p>Hủy Hàng</p>
+                    }
+                    @if(item.TrangThai == 1)
+                    {
+                        <p>Đang giao</p>
+                    }
+                    @if(item.TrangThai == 2)
+                    {
+                        <p>Đã Thanh Toán</p>
+                    }
+                </td>
+            <td>
+                
+                    @Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })
+                
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "BillDetail", new { id = item.IdBill }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+
             </td>
         </tr>
 }

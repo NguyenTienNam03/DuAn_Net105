@@ -72,7 +72,8 @@ namespace AppAPI.Controllers
 						   MoTa = a.MoTa,
 						   TrangThai = a.TrangThai,
 					   };
-			if(Spct.Any(c => c.Soluong > 0 && c.TrangThai == 1) == true)
+			var show = Spct.Where(c => c.Soluong > 0).Select(c => c.Id);
+			if (show != null)
 			{
 				return Spct.ToList();
 			} else

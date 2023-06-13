@@ -95,6 +95,16 @@ namespace AppView.Controllers
             return RedirectToAction("ShowAllSPCT");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ProductDetail(Guid id)
+        {
+            string url = $"https://localhost:7119/api/BinhLuan/GetAllOnlyProduct?id={id}";
+            var client = new HttpClient();
+            var repons = await client.GetAsync(url);
+            var dataapi = await repons.Content.ReadAsStringAsync();
+            var binhluan = JsonConvert.DeserializeObject<BinhLuanViewModels>(dataapi);
+            return View(binhluan);
+        }
         // MAU SAC
         [HttpGet]
         public async Task<IActionResult> GetAllColor()

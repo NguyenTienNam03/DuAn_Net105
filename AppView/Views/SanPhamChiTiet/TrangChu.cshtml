@@ -105,7 +105,8 @@
 					}
 				</td>
 				<td>
-					@Html.ActionLink("AddToCart", "ThemVaoGioHang", new { id = item.Id})
+					@Html.ActionLink("AddToCart", "ThemVaoGioHang", new { id = item.Id}) |
+					@Html.ActionLink("Details", "ProductDetail", new {  id = item.Id }) |
 				</td>
 
 			</tr>

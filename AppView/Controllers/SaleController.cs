@@ -25,19 +25,19 @@ namespace AppView.Controllers
             return View(lstsale);
         }
         [HttpGet]
-        public async Task<IActionResult> CreateSale()
+        public IActionResult CreateSale()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateSale(Sale sale)
+        public  IActionResult CreateSale(Sale sale)
         {
 			
-			string url = $"https://localhost:7119/api/Sale/CreteSale?masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
+			string url = $"https://localhost:7119/api/Sale/CreateSale?masale={sale.MaSale}&nbd={sale.NgayBatDau}&nkt={sale.NgayKetThuc}&giatrisale={sale.GiaTriSale}";
 			var client = new HttpClient();
 			var sale1 = JsonConvert.SerializeObject(sale);
 			StringContent content = new StringContent(sale1, Encoding.UTF8, "application/json");
-			HttpResponseMessage create = await client.PostAsync(url, content);
+			HttpResponseMessage create =  client.PostAsync(url, content).Result;
             return RedirectToAction("ShowAllSale");
         }
         [HttpGet]
@@ -74,6 +74,7 @@ namespace AppView.Controllers
             return View(sale);
         }
 
+       
         public async Task<IActionResult> DeleteSale(Sale sale)
         {
             string url = $"https://localhost:7119/api/Sale/Delete?id={sale.IDSale}";

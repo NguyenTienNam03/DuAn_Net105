@@ -12,7 +12,7 @@ namespace AppDaTa.ViewModels
         public string TenSanPham { get; set; }
         public string MauSac { get ; set; }
         public decimal Size { get; set; }
-        public int? GiaTriSale { get; set; }
+        public int GiaTriSale { get; set; }
         public string HangGiay { get; set; }
         public string TheLoai { get; set; }
         public decimal GiaBan { get; set; }

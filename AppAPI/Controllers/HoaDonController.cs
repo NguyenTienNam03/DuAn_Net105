@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace AppAPI.Controllers
 {
@@ -116,10 +117,37 @@ namespace AppAPI.Controllers
             var giatridautien = irepos.GetAll().OrderByDescending(c => c.NgayTao).First();
             return  giatridautien;
         }
+        [HttpPut("[action]")]
+        public bool ApDungVoucher(Guid idhoadon, Guid idvoucher)
+        {
+            HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
+            var dk = ireposvoucher.GetAll().FirstOrDefault(c => c.IDVoucher == idvoucher);
+            if(hoadon.ThanhTien > dk.Dieukien)
+            {
+                hoadon.IdBill = hoadon.IdBill;
+                hoadon.IDKhachHang = hoadon.IDKhachHang;
+                hoadon.IDVoucher = ireposvoucher.GetAll().First(c => c.IDVoucher == idvoucher).IDVoucher;
+                hoadon.MaHD = hoadon.MaHD;
+                hoadon.SoLuong = hoadon.SoLuong;
+                hoadon.ThanhTien = hoadon.ThanhTien;
+                hoadon.TongThanhToan = hoadon.ThanhTien - (hoadon.ThanhTien * ireposvoucher.GetAll().First(c => c.IDVoucher == idvoucher).GiaTriVoucher / 100);
+                hoadon.NgayTao = hoadon.NgayTao;
+                hoadon.NgayNhan = hoadon.NgayNhan;
+                hoadon.NgayShip = hoadon.NgayShip;
+                hoadon.TenNguoiNhan = hoadon.TenNguoiNhan;
+                hoadon.SDTNguoiNhan = hoadon.SDTNguoiNhan;
+                hoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
+                hoadon.TrangThai = 1;
+            }
+            return irepos.UpdateItem(hoadon);
+            
+        }
         [HttpPut("{Update-HoaDon}")]
         public bool UpdateHoadon(Guid idhoadon, Guid idvoucher ,string tennguoinhan, string sdt, string dc)
         {
+           
             var HDCT = ireposhdct.GetAll().FirstOrDefault(c => c.IDHD == idhoadon);
+          
             HoaDon hoadon = irepos.GetAll().FirstOrDefault(p => p.IdBill == idhoadon);
             if (hoadon.IdBill == idhoadon)
             {
@@ -137,7 +165,40 @@ namespace AppAPI.Controllers
                 hoadon.SDTNguoiNhan = sdt;
                 hoadon.DiaChiNguoiNhan = dc;
                 hoadon.TrangThai = 1;
-                return irepos.UpdateItem(hoadon);
+                irepos.UpdateItem(hoadon);
+
+                foreach(var item in ireposhdct.GetAll())
+                {
+                    SanPhamChiTiet updatesspct = IreposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == HDCT.IDSPCT);
+                    var soluong = updatesspct.SoLuong - item.SoLuong;
+                    if (updatesspct.IDSPCT == item.IDSPCT)
+                    {
+                        updatesspct.IDSPCT = updatesspct.IDSPCT;
+                        updatesspct.IDMau = updatesspct.IDMau;
+                        updatesspct.IDSP = updatesspct.IDSP;
+                        updatesspct.IDSale = updatesspct.IDSale;
+                        updatesspct.IDSize = updatesspct.IDSize;
+                        updatesspct.IDHang = updatesspct.IDHang;
+                        updatesspct.IDTheLoai = updatesspct.IDTheLoai;
+                        updatesspct.Anh = updatesspct.Anh;
+                        updatesspct.GiaBan = updatesspct.GiaBan;
+                        updatesspct.GiaSale = updatesspct.GiaSale;
+                        updatesspct.MoTa = updatesspct.MoTa;
+                        if(soluong > 0)
+                        {
+                            updatesspct.SoLuong = updatesspct.SoLuong - item.SoLuong;
+                            updatesspct.TrangThai = updatesspct.TrangThai;
+                        }
+                        else
+                        {
+                            updatesspct.SoLuong = 0;
+                            updatesspct.TrangThai = 0;
+                        }
+                       
+                    }
+                    IreposSPCT.UpdateItem(updatesspct);
+                }
+                return true;
             }
             else
             {

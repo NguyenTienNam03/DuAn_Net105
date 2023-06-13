@@ -1,10 +1,19 @@
-
+﻿
 using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
+//using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Security.Claims;
+using System.Xml;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace AppAPI.Controllers
 {
@@ -13,15 +22,16 @@ namespace AppAPI.Controllers
 
     public class NguoiDungController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private IAllRepositories<NguoiDung> ireposUser;
         private IAllRepositories<ChucVu> ireposRole;
 
         private QLBG_Context context = new QLBG_Context();
-        public NguoiDungController()
+        public NguoiDungController(IConfiguration configuration)
         {
             AllRepositories<NguoiDung> reposuser = new AllRepositories<NguoiDung>(context, context.nguoiDungs);
             AllRepositories<ChucVu> reposrole = new AllRepositories<ChucVu>(context, context.chucVus);
-
+            _configuration = configuration;
             ireposUser = reposuser;
             ireposRole = reposrole;
 
@@ -78,18 +88,28 @@ namespace AppAPI.Controllers
             NguoiDung user = ireposUser.GetAll().First(p => p.IDUser == id);
             return ireposUser.DeleteItem(user);
         }
-        [HttpPost]
-        public bool Login(string email , string pass)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(NguoiDung nguoidung)
         {
-            if(ireposUser.GetAll().Any(c => c.Email == email && c.MatKhau == pass) == true)
+          if(nguoidung == null || string.IsNullOrEmpty(nguoidung.Email) || string.IsNullOrEmpty(nguoidung.MatKhau))
             {
-                return true;
-            }else
-            {
-                return false;
+                return BadRequest("Vui lòng nhập tên đăng nhập và mật khẩu.");
             }
-
-            //ff
+          if(await IsValidUser(nguoidung.Email , nguoidung.MatKhau))
+            {
+                return Ok();
+            }
+            return Unauthorized();
+        }
+        private async Task<bool> IsValidUser(string email , string pass)
+        {
+            var email1 = ireposUser.GetAll().FirstOrDefault(c => c.Email == email);
+            if(email1.Email == email && email1.MatKhau == pass)
+            {
+                var id = ireposUser.GetAll().FirstOrDefault(c => c.Email == email).IDUser;
+                GetById(id);
+            }
+            return false;   
         }
     }
 }
