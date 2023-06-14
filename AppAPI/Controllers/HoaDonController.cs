@@ -207,6 +207,49 @@ namespace AppAPI.Controllers
 
         }
 
+        [HttpPut("[action]")]
+        public bool NhanHang(Guid idhd)
+        {
+            HoaDon hoadon = irepos.GetAll().First(c => c.IdBill == idhd);
+            hoadon.IdBill = hoadon.IdBill;
+            hoadon.IDKhachHang = hoadon.IDKhachHang;
+            hoadon.IDVoucher = hoadon.IDVoucher;
+            hoadon.MaHD = hoadon.MaHD;
+            hoadon.SoLuong = hoadon.SoLuong;
+            hoadon.ThanhTien = hoadon.ThanhTien;
+            hoadon.TongThanhToan = hoadon.ThanhTien;
+            hoadon.NgayTao = hoadon.NgayTao;
+            hoadon.NgayNhan = hoadon.NgayNhan;
+            hoadon.NgayShip = hoadon.NgayShip;
+            hoadon.TenNguoiNhan = hoadon.TenNguoiNhan;
+            hoadon.SDTNguoiNhan = hoadon.SDTNguoiNhan;
+            hoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
+            hoadon.TrangThai = 2;
+            return irepos.UpdateItem(hoadon);
+
+        }
+        [HttpPut("[action]")]
+        public bool HuyHang(Guid idhd)
+        {
+            HoaDon hoadon = irepos.GetAll().First(c => c.IdBill == idhd);
+            hoadon.IdBill = hoadon.IdBill;
+            hoadon.IDKhachHang = hoadon.IDKhachHang;
+            hoadon.IDVoucher = hoadon.IDVoucher;
+            hoadon.MaHD = hoadon.MaHD;
+            hoadon.SoLuong = hoadon.SoLuong;
+            hoadon.ThanhTien = hoadon.ThanhTien;
+            hoadon.TongThanhToan = hoadon.ThanhTien;
+            hoadon.NgayTao = hoadon.NgayTao;
+            hoadon.NgayNhan = hoadon.NgayNhan;
+            hoadon.NgayShip = hoadon.NgayShip;
+            hoadon.TenNguoiNhan = hoadon.TenNguoiNhan;
+            hoadon.SDTNguoiNhan = hoadon.SDTNguoiNhan;
+            hoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
+            hoadon.TrangThai = 0;
+            return irepos.UpdateItem(hoadon);
+
+        }
+
         [HttpDelete("{Delete-HoaDon}")]
         public bool DeleteHoaDon(Guid idhoadon)
         {

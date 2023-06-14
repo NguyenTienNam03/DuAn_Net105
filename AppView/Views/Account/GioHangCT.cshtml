@@ -4,7 +4,7 @@
 	ViewData["Title"] = "GioHangCT";
 	var id = ViewBag.IDUser;
 	var lst = ViewBag.lstspctmodel;
-	
+
 }
 
 <h1>GioHangCT</h1>
@@ -16,7 +16,7 @@
 	<thead>
 		<tr>
 			<th>
-			@Html.DisplayNameFor(model => model.IDGHCT)
+				@Html.DisplayNameFor(model => model.IDGHCT)
 			</th>
 			@*<th>
 			@Html.DisplayNameFor(model => model.IDGH)
@@ -48,20 +48,20 @@
 					thanhtien = (double)(item.SoLuong * item.Gia);
 				}
 				<td>
-			@Html.DisplayFor(modelItem => item.IDGHCT)
-			</td>
-			@*<td>
+					@Html.DisplayFor(modelItem => item.IDGHCT)
+				</td>
+				@*<td>
 			@Html.DisplayFor(modelItem => item.IDGH)
 			</td>*@
 				@*<td>
-					@foreach (var spcimodel in  ViewBag.lstspctmodel)
-					{
-						if (item.IDSPCT == spcimodel.Id)
-						{
-							<span>@spcimodel.TenSanPham</span>
-						}
-					}
-				</td>*@
+			@foreach (var spcimodel in  ViewBag.lstspctmodel)
+			{
+			if (item.IDSPCT == spcimodel.Id)
+			{
+			<span>@spcimodel.TenSanPham</span>
+			}
+			}
+			</td>*@
 				<td>
 					@Html.DisplayFor(modelItem => item.IDSPCT)
 				</td>
@@ -92,9 +92,20 @@
 			</tr>
 		}
 		<hr />
+	<td class="text-right">Tổng số lượng:</td>
+	<td> @Model.Sum(m => m.SoLuong) </td>
+	<td class="text-right">Tổng thành tiền:</td>
+	<td>@Model.Sum(m => m.SoLuong * m.Gia) $ </td>
 	<td>
-		@*<a href="@Url.Action("CreateBill")" onclick="return confirm('Bạn có muốn thanh toán không?');" class="btn btn-success btn-sm">Thanh toán</a>*@
-		<a asp-action="CreateBill">Create New</a> |
+			@if (Model.Sum(m => m.SoLuong) == 0)
+			{
+			<button asp-action="CreateBill" class="btn btn-success"  disabled>Xac Nhan</button>
+			}
+			else
+			{
+			<button asp-action="CreateBill" class="btn btn-success" >Xac Nhan</button>
+			}
+
 	</td>
 	</tbody>
 </table>

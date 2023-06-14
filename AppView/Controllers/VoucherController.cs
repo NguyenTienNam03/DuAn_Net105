@@ -36,15 +36,14 @@ namespace AppView.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllVoucher()
+        public async Task<IActionResult> ShowAllVoucher()
         {
-            string url = $"https://localhost:7119/api/Voucher/GettAllVoucher";
-            
-            var response = await client.GetAsync(url);
-            string a = await response.Content.ReadAsStringAsync();
-            var listVoucher = JsonConvert.DeserializeObject<List<Voucher>>(a);
-            return View(listVoucher);
-        }
+			string url = $"https://localhost:7119/api/Voucher/GettAllVoucher";
+			var response = client.GetAsync(url).Result;
+			string a = response.Content.ReadAsStringAsync().Result;
+			var listVoucher = JsonConvert.DeserializeObject<List<Voucher>>(a);
+			return View(listVoucher);
+		}
         [HttpGet]
         public IActionResult CreateVoucher()
         {
