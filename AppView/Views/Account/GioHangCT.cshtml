@@ -15,14 +15,14 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
+			<th style="display:none;">
 				@Html.DisplayNameFor(model => model.IDGHCT)
 			</th>
-			@*<th>
-			@Html.DisplayNameFor(model => model.IDGH)
-			</th>*@
+			<th style="display:none;">
+				@Html.DisplayNameFor(model => model.IDGH)
+			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.SanPhamCT.IDSPCT)
+				@Html.DisplayNameFor(model => model.SanPhamCT.SanPham.TenSP)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.SanPhamCT.Anh)
@@ -47,29 +47,20 @@
 					double thanhtien = 0;
 					thanhtien = (double)(item.SoLuong * item.Gia);
 				}
-				<td>
+				<td style="display:none;">
 					@Html.DisplayFor(modelItem => item.IDGHCT)
 				</td>
-				@*<td>
-			@Html.DisplayFor(modelItem => item.IDGH)
-			</td>*@
-				@*<td>
-			@foreach (var spcimodel in  ViewBag.lstspctmodel)
-			{
-			if (item.IDSPCT == spcimodel.Id)
-			{
-			<span>@spcimodel.TenSanPham</span>
-			}
-			}
-			</td>*@
-				<td>
-					@Html.DisplayFor(modelItem => item.IDSPCT)
+				<td style="display:none;">
+					@Html.DisplayFor(modelItem => item.IDGH)
 				</td>
 				<td>
-					@foreach (var image in lst)
-					{
-						<img src="/images/@image.Anh?v=Kl_dqr9NVtnMdsM2MUg4qthUnWZm5T1fCEimBPWDNgM" style="height:50px ; width: 50px;">
-					}
+
+					<span>@ViewBag.Tebsp</span>
+						
+				</td>
+				<td>
+					<img src="/images/@ViewBag.Anh" style="height:50px ; width: 50px;">
+
 				</td>
 				<td>
 					<span>@(item.Gia.ToString("n0")) $</span>
@@ -98,12 +89,12 @@
 	<td>@Model.Sum(m => m.SoLuong * m.Gia) $ </td>
 	<td>
 			@*@if (Model.Sum(m => m.SoLuong) == 0)
-			{
-			<button asp-action="CreateBill" class="btn btn-success"  disabled>Xac Nhan</button>
-			}
-			else
-			{*@
-		@*<button asp-action="CreateBill" class="btn btn-success">Xac Nhan</button>*@
+		{
+		<button asp-action="CreateBill" class="btn btn-success"  disabled>Xac Nhan</button>
+		}
+		else
+		{*@
+			@*<button asp-action="CreateBill" class="btn btn-success">Xac Nhan</button>*@
 		<a asp-action="CreateBill" class="btn btn-success">Create New</a>
 			@*}*@
 

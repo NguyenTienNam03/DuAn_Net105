@@ -12,7 +12,7 @@ namespace AppDaTa.Models
         public Guid IDSP { get; set; }
         public Guid IDMau { get; set; }
         public Guid IDSize { get; set; }
-        public Guid? IDSale { get; set; } 
+        public Guid IDSale { get; set; } 
         public Guid IDHang { get; set; }
         public Guid IDTheLoai { get; set; }
         public decimal GiaBan { get; set; } 

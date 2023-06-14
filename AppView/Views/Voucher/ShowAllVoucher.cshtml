@@ -71,7 +71,13 @@
 					@Html.DisplayFor(modelItem => item.Soluong)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.TrangThai)
+					@if(item.NgayBatDau.Date <= DateTime.Now.Date && DateTime.Now.Date <= item.NgayKetThuc.Date && item.Soluong > 0)
+					{
+						<span>Hoạt Động</span>
+					} else
+					{
+						<span>Không hoạt động</span>
+					}
 				</td>
 				<td>
 					@Html.ActionLink("Edit", "EditVoucher", new {  id=item.IDVoucher  }) |

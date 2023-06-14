@@ -53,7 +53,7 @@ namespace AppView.Controllers
         [HttpPost]
         public IActionResult CreateVoucher(Voucher a)
         {
-            string data = JsonConvert.SerializeObject(a);
+            var data = JsonConvert.SerializeObject(a);
             string url = $"https://localhost:7119/api/Voucher/CreateVoucher?MaVoucher={a.MaVoucher}&NgayTao={a.NgayTao}&" +
                 $"Dieukien={a.Dieukien}&NgayBatDau={a.NgayBatDau}&" +
                 $"NgayKetThuc={a.NgayKetThuc}&GiaTriVoucher={a.GiaTriVoucher}&Soluong={a.Soluong}";
@@ -62,7 +62,7 @@ namespace AppView.Controllers
             var client = new HttpClient();
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
             HttpResponseMessage respon = client.PostAsync(url, content).Result;
-            return RedirectToAction("GetAllVoucher");
+            return RedirectToAction("ShowAllVoucher");
         }
         [HttpGet]
         public async Task<IActionResult> EditVoucher(Guid ID)
@@ -78,18 +78,18 @@ namespace AppView.Controllers
         [HttpPost]
         public IActionResult EditVoucher(Voucher a1)
         {
-            string data = JsonConvert.SerializeObject(a1);
+            var data = JsonConvert.SerializeObject(a1);
             string url = $"https://localhost:7119/api/Voucher/UpdateVoucher?IDVoucher={a1.IDVoucher}&MaVoucher={a1.MaVoucher}&NgayTao={a1.NgayTao}&Dieukien={a1.Dieukien}&NgayBatDau={a1.NgayBatDau}&NgayKetThuc={a1.NgayKetThuc}&GiaTriVoucher={a1.GiaTriVoucher}&Soluong={a1.Soluong}";
 
 			StringContent ct = new StringContent(data, Encoding.UTF8, "application/json");
             HttpResponseMessage respon= client.PutAsync(url,ct).Result;
-            return RedirectToAction("GetAllVoucher");
+            return RedirectToAction("ShowAllVoucher");
         }
         public IActionResult DeleteVoucher(Guid a2)
         {
             var url = $"https://localhost:7119/api/Voucher/DeleteVoucher?Id={a2}";
             var respon = client.DeleteAsync(url);
-            return RedirectToAction("GetAllVoucher");
+            return RedirectToAction("ShowAllVoucher");
 
 
         }         

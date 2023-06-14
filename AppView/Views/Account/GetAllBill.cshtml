@@ -12,12 +12,12 @@
 <table class="table">
 	<thead>
 		<tr>
-			@*<th>
-			@Html.DisplayNameFor(model => model.IdBill)
+			<th style="display:none;">
+				@Html.DisplayNameFor(model => model.IdBill)
 			</th>
-			<th>
-			@Html.DisplayNameFor(model => model.IDKhachHang)
-			</th>*@
+			<th style="display:none;">
+				@Html.DisplayNameFor(model => model.IDKhachHang)
+			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.MaHD)
 			</th>
@@ -62,12 +62,12 @@
 		@foreach (var item in Model)
 		{
 			<tr>
-				@*<td>
-			@Html.DisplayFor(modelItem => item.IdBill)
-			</td>
-			<td>
-			@Html.DisplayFor(modelItem => item.IDKhachHang)
-			</td>*@
+				<td style="display:none;">
+					@Html.DisplayFor(modelItem => item.IdBill)
+				</td>
+				<td style="display:none;">
+					@Html.DisplayFor(modelItem => item.IDKhachHang)
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.MaHD)
 				</td>
@@ -120,7 +120,9 @@
 				</td>
 				<td>
 
-					@Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })
+					@Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })  |
+					@Html.ActionLink("ThanhToan", "NhanHang", new { IdBill = item.IdBill })  |
+					@Html.ActionLink("HuyHang", "HuyHang", new { IdBill = item.IdBill })
 
 				</td>
 				<td>

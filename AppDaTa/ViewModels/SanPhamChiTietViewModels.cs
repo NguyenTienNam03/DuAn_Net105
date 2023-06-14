@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppDaTa.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +22,6 @@ namespace AppDaTa.ViewModels
         public string Anh { get; set; }
         public string MoTa { get; set; }
         public int TrangThai { get; set; }
+        public GioHangChiTiet GioHangChiTiet { get; set; }
     }
 }

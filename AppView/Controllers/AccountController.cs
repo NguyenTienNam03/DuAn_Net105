@@ -1,4 +1,5 @@
-﻿using AppDaTa.Models;
+﻿using AppDaTa.IRepositories;
+using AppDaTa.Models;
 using AppDaTa.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -15,14 +16,41 @@ namespace AppView.Controllers
     {
         //login , đăng kí, mau , bill, hóa đơn chi tiết , giỏ hàng , giỏ hàng chi tiết.
         private QLBG_Context _context = new QLBG_Context();
-        private List<SanPhamChiTietViewModels> spctviewmodel = new List<SanPhamChiTietViewModels>();
+      
 
-        [HttpGet]
+       
+
+		[HttpGet]
         public async Task<IActionResult> GioHangCT()
         {
-            
-            ViewBag.IDUser = Guid.Parse("305f3d5a-3cf3-4af0-a4d7-807063b6ead0");
-            ViewBag.lstspctmodel = spctviewmodel.ToList();
+      
+			var Spct = from a in _context.sanPhamCTs
+					   join b in _context.sanPhams on a.IDSP equals b.IdSP
+					   join c in _context.maus on a.IDMau equals c.IDMau
+					   join d in _context.hangSXs on a.IDHang equals d.IDHangSx
+					   join e in _context.sizes on a.IDSize equals e.IDSize
+					   join f in _context.Sale on a.IDSale equals f.IDSale
+					   join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
+					   select new SanPhamChiTietViewModels
+					   {
+						   Id = a.IDSPCT,
+						   MauSac = c.Mausac,
+						   TenSanPham = b.TenSP,
+						   HangGiay = d.TenHangSX,
+						   Size = e.SizeGiay,
+						   TheLoai = h.TenTheLoai,
+						   GiaTriSale = f.GiaTriSale,
+						   GiaBan = a.GiaBan,
+						   GiaSale = a.GiaSale,
+						   Soluong = a.SoLuong,
+						   Anh = a.Anh,
+						   MoTa = a.MoTa,
+						   TrangThai = a.TrangThai,
+					   };
+			ViewBag.Anh = new SelectList(_context.sanPhamCTs.ToList(), "IDSPCT", "Anh");
+			ViewBag.Tebsp = new SelectList(Spct.ToList(), "Id", "TenSanPham");
+			ViewBag.IDUser = Guid.Parse("305f3d5a-3cf3-4af0-a4d7-807063b6ead0");
+         
             string url = $"https://localhost:7119/api/GioHangCT/GetAll";
             var httpClient = new HttpClient();
             var repos = await httpClient.GetAsync(url);
@@ -143,5 +171,30 @@ namespace AppView.Controllers
             }
 			return View();
         }
-    }
+        [HttpGet]
+        [HttpPost]
+        public async Task<IActionResult> NhanHang(HoaDon hoaDon)
+        {
+            string url = $"https://localhost:7119/api/HoaDon/NhanHang?idhd={hoaDon.IdBill}";
+            var client = new HttpClient();
+            var obj = JsonConvert.SerializeObject(hoaDon);
+
+            StringContent stringContent = new StringContent(obj ,Encoding.UTF8 , "application/json");
+            HttpResponseMessage httpResponseMessage =  await client.PutAsync(url, stringContent);
+            return RedirectToAction("GetAllBill");
+        }
+		[HttpGet]
+		[HttpPost]
+		public async Task<IActionResult> HuyHang(HoaDon hoaDon)
+		{
+			string url = $"https://localhost:7119/api/HoaDon/HuyHang?idhd={hoaDon.IdBill}";
+			var client = new HttpClient();
+			var obj = JsonConvert.SerializeObject(hoaDon);
+
+			StringContent stringContent = new StringContent(obj, Encoding.UTF8, "application/json");
+			HttpResponseMessage httpResponseMessage = await client.PutAsync(url, stringContent);
+
+			return RedirectToAction("GetAllBill");
+		}
+	}
 }

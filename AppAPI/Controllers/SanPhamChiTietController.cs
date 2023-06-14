@@ -72,8 +72,8 @@ namespace AppAPI.Controllers
                            MoTa = a.MoTa,
                            TrangThai = a.TrangThai,
                        };
-            var show = Spct.Where(c => c.Soluong > 0).Select(c => c.Id);
-            return Spct.ToList();
+            var show = Spct.Where(c => c.Soluong > 0);
+            return show.ToList();
 
         }
         [HttpGet("[action]")]
