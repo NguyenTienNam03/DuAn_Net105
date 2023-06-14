@@ -97,14 +97,15 @@
 	<td class="text-right">Tổng thành tiền:</td>
 	<td>@Model.Sum(m => m.SoLuong * m.Gia) $ </td>
 	<td>
-			@if (Model.Sum(m => m.SoLuong) == 0)
+			@*@if (Model.Sum(m => m.SoLuong) == 0)
 			{
 			<button asp-action="CreateBill" class="btn btn-success"  disabled>Xac Nhan</button>
 			}
 			else
-			{
-			<button asp-action="CreateBill" class="btn btn-success" >Xac Nhan</button>
-			}
+			{*@
+		@*<button asp-action="CreateBill" class="btn btn-success">Xac Nhan</button>*@
+		<a asp-action="CreateBill" class="btn btn-success">Create New</a>
+			@*}*@
 
 	</td>
 	</tbody>

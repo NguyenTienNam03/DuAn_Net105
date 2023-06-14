@@ -85,9 +85,9 @@ namespace AppAPI.Controllers
             List<Guid> userid = comment.Select(c => c.IDNguoiDung).ToList();
 
             List<NguoiDung> lstuser = context.nguoiDungs.Where(c => userid.Contains(c.IDUser)).ToList();
-            return lstuser;
-        }
 
+			return lstuser;
+        }
         // GET api/<BinhLuan>/5
         [HttpGet("{id}")]
         public BinhLuan Get(Guid id)

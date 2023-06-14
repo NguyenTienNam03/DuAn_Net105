@@ -2,6 +2,7 @@
 
 @{
 	ViewData["Title"] = "EditBill";
+	var voucher = ViewBag.lstvocher;
 }
 
 <h1>EditBill</h1>
@@ -80,9 +81,112 @@
 				<div class="col-7">
 					@Html.DropDownList("IDVoucher", ViewBag.voucher as IEnumerable<SelectListItem>, "", null)
 					@Html.ValidationMessageFor(model => model.IDVoucher, "", new { @class = "text-danger" })
+
+					@*Mở forrm Vocher*@
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+						Sử Dụng Vocher
+					</button>
+
+
+					<!-- Modal (Form nổi) -->
+					<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="myModalLabel">Form Nổi</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<table class="table">
+										<thead>
+											<tr>
+												<th style ="display:none;">
+													<span >IDVoucher</span>
+												</th>
+												<th>
+
+													<span>MaVoucher</span>
+												</th>
+												<th style="display:none;">
+
+													<span>NgayTao</span>
+												</th>
+												<th>
+
+													<span>Dieukien</span>
+												</th>
+												<th>
+
+													<span>NgayBatDau</span>
+												</th>
+												<th>
+
+													<span>NgayKetThuc</span>
+												</th>
+												<th>
+
+													<span>GiaTriVoucher</span>
+												</th>
+												<th>
+
+													<span>Soluong</span>
+												</th>
+												<th>
+
+													<span>TrangThai</span>
+												</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var item in voucher)
+											{
+												<tr>
+													<td style="display:none;">
+														item.IDVoucher
+													</td>
+													<td>
+														@Html.DisplayName(item.MaVoucher)
+													</td>
+													<td style="display:none;">
+														@item.NgayTao
+													</td>
+													<td>
+														Tổng thanh toán lớn @item.Dieukien)
+													</td>
+													<td>
+														@item.NgayBatDau
+													</td>
+													<td>
+														@item.NgayKetThuc
+													</td>
+													<td>
+														Giảm @item.GiaTriVoucher %
+													</td>
+													<td>
+														1
+													</td>
+													<td>
+														@item.TrangThai
+													</td>
+													<td>
+														<a asp-action="ApDungVoucher">Sử Dụng Vocher</a>
+													</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary">Lưu</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			@Html.ActionLink("ApDung", "ApDungVoucher", new { IdBill = Model.IdBill })
+
+
 			<div class="form-group row">
 				<div class="col-5">
 					<label asp-for="TongThanhToan" class="control-label"></label>
@@ -121,7 +225,7 @@
 				<span asp-validation-for="TrangThai" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<button type="submit" value="Save" class="btn btn-success onclick="return confirm('Bạn có muốn thanh toán không?');" > </button>
+				<button type="submit" value="Save" class="btn btn-success" onclick="return confirm('Bạn có muốn thanh toán không?');">Thanh Toán </button>
 			</div>
 		</form>
 	</div>

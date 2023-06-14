@@ -1,138 +1,131 @@
 ﻿@model IEnumerable<AppDaTa.Models.HoaDon>
 
 @{
-    ViewData["Title"] = "GetAllBill";
+	ViewData["Title"] = "GetAllBill";
 }
 
 <h1>GetAllBill</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            @*<th>
-                @Html.DisplayNameFor(model => model.IdBill)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IDKhachHang)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.MaHD)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IDVoucher)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.SoLuong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ThanhTien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TongThanhToan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayTao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayNhan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayShip)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TenNguoiNhan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SDTNguoiNhan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaChiNguoiNhan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.IdBill)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IDKhachHang)
-            </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaHD)
-                </td>
-            <td>
-                    @if(item.Voucher.GiaTriVoucher == 0)
-                    {
-                        <div style="display: none">
-                            @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
-                        </div>
+	<thead>
+		<tr>
+			@*<th>
+			@Html.DisplayNameFor(model => model.IdBill)
+			</th>
+			<th>
+			@Html.DisplayNameFor(model => model.IDKhachHang)
+			</th>*@
+			<th>
+				@Html.DisplayNameFor(model => model.MaHD)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.IDVoucher)
+			</th>
 
-                    } else
-                    {
-                        @Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
-                    }
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ThanhTien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongThanhToan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayTao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayNhan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayShip)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenNguoiNhan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SDTNguoiNhan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiaChiNguoiNhan)
-            </td>
-            <td>
-                    @if(item.TrangThai == 0)
-                    {
-                        <p>Hủy Hàng</p>
-                    }
-                    @if(item.TrangThai == 1)
-                    {
-                        <p>Đang giao</p>
-                    }
-                    @if(item.TrangThai == 2)
-                    {
-                        <p>Đã Thanh Toán</p>
-                    }
-                </td>
-            <td>
-                
-                    @Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })
-                
-            </td>
-            <td>
+			<th>
+				@Html.DisplayNameFor(model => model.SoLuong)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ThanhTien)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TongThanhToan)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NgayTao)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NgayNhan)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.NgayShip)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TenNguoiNhan)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SDTNguoiNhan)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.DiaChiNguoiNhan)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrangThai)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				@*<td>
+			@Html.DisplayFor(modelItem => item.IdBill)
+			</td>
+			<td>
+			@Html.DisplayFor(modelItem => item.IDKhachHang)
+			</td>*@
+				<td>
+					@Html.DisplayFor(modelItem => item.MaHD)
+				</td>
+				<td>
 
-            </td>
-        </tr>
-}
-    </tbody>
+					@Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
+
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.SoLuong)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ThanhTien)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TongThanhToan)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NgayTao)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NgayNhan)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.NgayShip)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TenNguoiNhan)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SDTNguoiNhan)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DiaChiNguoiNhan)
+				</td>
+				<td>
+					@if (item.TrangThai == 0)
+					{
+						<p>Hủy Hàng</p>
+					}
+					@if (item.TrangThai == 1)
+					{
+						<p>Đang giao</p>
+					}
+					@if (item.TrangThai == 2)
+					{
+						<p>Đã Thanh Toán</p>
+					}
+				</td>
+				<td>
+
+					@Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })
+
+				</td>
+				<td>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

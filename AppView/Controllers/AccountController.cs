@@ -30,7 +30,10 @@ namespace AppView.Controllers
             var ghct = JsonConvert.DeserializeObject<List<GioHangChiTiet>>(dataapi);
             return View(ghct);
         }
-
+        public IActionResult MoForm()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> UpdateQuatity(GioHangChiTiet ghct)
         {
@@ -79,6 +82,7 @@ namespace AppView.Controllers
         [HttpPost]
         public async Task<IActionResult> EditBill(HoaDon hoaDon)
         {
+            ViewBag.lstvocher = _context.voucher.ToList();
 			ViewBag.voucher = new SelectList(_context.voucher.ToList().Where(c => c.TrangThai > 0).OrderBy(c => c.GiaTriVoucher), "IDVoucher", "GiaTriVoucher");
 			var client = new HttpClient();
             string UrlID = $"https://localhost:7119/api/HoaDon/Lay1GiaTri";
