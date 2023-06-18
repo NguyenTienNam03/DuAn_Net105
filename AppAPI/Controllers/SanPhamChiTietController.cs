@@ -76,7 +76,36 @@ namespace AppAPI.Controllers
             return show.ToList();
 
         }
-        [HttpGet("[action]")]
+		[HttpGet("[action]")]
+		public IEnumerable<SanPhamChiTietViewModels> listSPCT()
+		{
+			var Spct = from a in _context.sanPhamCTs
+					   join b in _context.sanPhams on a.IDSP equals b.IdSP
+					   join c in _context.maus on a.IDMau equals c.IDMau
+					   join d in _context.hangSXs on a.IDHang equals d.IDHangSx
+					   join e in _context.sizes on a.IDSize equals e.IDSize
+					   join f in _context.Sale on a.IDSale equals f.IDSale
+					   join h in _context.theLoai on a.IDTheLoai equals h.IDTheLoai
+					   select new SanPhamChiTietViewModels
+					   {
+						   Id = a.IDSPCT,
+						   MauSac = c.Mausac,
+						   TenSanPham = b.TenSP,
+						   HangGiay = d.TenHangSX,
+						   Size = e.SizeGiay,
+						   TheLoai = h.TenTheLoai,
+						   GiaTriSale = f.GiaTriSale,
+						   GiaBan = a.GiaBan,
+						   GiaSale = a.GiaSale,
+						   Soluong = a.SoLuong,
+						   Anh = a.Anh,
+						   MoTa = a.MoTa,
+						   TrangThai = a.TrangThai,
+					   };
+			return Spct.ToList();
+
+		}
+		[HttpGet("[action]")]
         public List<SanPhamChiTietViewModels> SanPhamSale()
         {
             //foreach (var item in iresposspct.GetAll())

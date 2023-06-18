@@ -35,7 +35,17 @@ namespace AppView.Controllers
             var SPCT = JsonConvert.DeserializeObject<List<SanPhamChiTietViewModels>>(datapi);
             return View(SPCT);
         }
-        [HttpGet]
+		[HttpGet]
+		public IActionResult ListSPCT()
+		{
+			string url = $"https://localhost:7119/api/SanPhamChiTiet/listSPCT";
+			HttpClient httpClient = new HttpClient();
+			var respons = httpClient.GetAsync(url).Result;
+			string datapi = respons.Content.ReadAsStringAsync().Result;
+			var SPCT = JsonConvert.DeserializeObject<List<SanPhamChiTietViewModels>>(datapi);
+			return View(SPCT);
+		}
+		[HttpGet]
         public IActionResult ShowAllSpSale()
         {
             string url = $"https://localhost:7119/api/SanPhamChiTiet/SanPhamSale";
