@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppDaTa.Models.HoaDon>
+﻿@model IEnumerable<AppDaTa.ViewModels.HoaDonViewModels>
 
 @{
 	ViewData["Title"] = "GetAllBill";
@@ -12,19 +12,18 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th style="display:none;">
+			<th>
 				@Html.DisplayNameFor(model => model.IdBill)
 			</th>
-			<th style="display:none;">
-				@Html.DisplayNameFor(model => model.IDKhachHang)
+			<th>
+				@Html.DisplayNameFor(model => model.NameKhachHang)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.GiatriVH)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.MaHD)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.IDVoucher)
-			</th>
-
 			<th>
 				@Html.DisplayNameFor(model => model.SoLuong)
 			</th>
@@ -62,21 +61,18 @@
 		@foreach (var item in Model)
 		{
 			<tr>
-				<td style="display:none;">
+				<td>
 					@Html.DisplayFor(modelItem => item.IdBill)
 				</td>
-				<td style="display:none;">
-					@Html.DisplayFor(modelItem => item.IDKhachHang)
+				<td>
+					@Html.DisplayFor(modelItem => item.NameKhachHang)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.GiatriVH)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.MaHD)
 				</td>
-				<td>
-
-					@Html.DisplayFor(modelItem => item.Voucher.GiaTriVoucher)
-
-				</td>
-
 				<td>
 					@Html.DisplayFor(modelItem => item.SoLuong)
 				</td>
@@ -119,13 +115,17 @@
 					}
 				</td>
 				<td>
+					<a href="@Url.Action("BillDetail",new { id = item.IdBill})" class="btn btn-secondary">Details</a>
 
-					@Html.ActionLink("Details", "BillDetail", new { id = item.IdBill })  |
-					@Html.ActionLink("ThanhToan", "NhanHang", new { IdBill = item.IdBill })  |
-					@Html.ActionLink("HuyHang", "HuyHang", new { IdBill = item.IdBill })
+					
 
-				</td>
-				<td>
+					<a href="@Url.Action("NhanHang",new { id = item.IdBill})" class="btn btn-success">ThanhToan</a>
+
+
+					<a href="@Url.Action("HuyHang",new { id = item.IdBill})" class="btn btn-danger">HuyHang</a>
+					
+					
+
 				</td>
 			</tr>
 		}

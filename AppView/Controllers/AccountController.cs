@@ -89,7 +89,8 @@ namespace AppView.Controllers
             var client = new HttpClient();
             var repons = await client.GetAsync(url);
             var dataapi = await repons.Content.ReadAsStringAsync();
-            var listbill = JsonConvert.DeserializeObject<List<HoaDon>>(dataapi);
+            var listbill = JsonConvert.DeserializeObject<List<HoaDonViewModels>>(dataapi);
+            //var idvh = listbill.Select(c => c.IDVoucher).ToList();
             return View(listbill);
         }
         [HttpGet]
@@ -138,9 +139,17 @@ namespace AppView.Controllers
         [HttpPut]
         public IActionResult ApDungVoucher(HoaDon hoaDon)
         {
-            string url = $"https://localhost:7119/api/HoaDon/ApDungVoucher?idhoadon={hoaDon.IdBill}&idvoucher={hoaDon.IDVoucher}";
-            var client = new HttpClient();
-            var apdungvoucher = JsonConvert.SerializeObject(hoaDon);
+			var client = new HttpClient();
+			
+            string urlvh = $"https://localhost:7119/api/Voucher/GettByIDVoucher?id={hoaDon.IDVoucher}";
+            
+            var repos = client.GetAsync(urlvh);
+            Voucher voucher = JsonConvert.DeserializeObject<Voucher>(urlvh);
+            ViewBag.Giatri = voucher.GiaTriVoucher;
+
+			string url = $"https://localhost:7119/api/HoaDon/ApDungVoucher?idhoadon={hoaDon.IdBill}&idvoucher={hoaDon.IDVoucher}";
+			var apdungvoucher = JsonConvert.SerializeObject(hoaDon);
+
             StringContent stringContent = new StringContent(apdungvoucher, Encoding.UTF8, "application/json");
             HttpResponseMessage ApDung = client.PutAsync(url, stringContent).Result;
             return View("EditBill");

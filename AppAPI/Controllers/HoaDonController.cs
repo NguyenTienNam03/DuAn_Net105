@@ -4,6 +4,7 @@ using AppDaTa.IRepositories;
 using AppDaTa.Models;
 using AppDaTa.Repositories;
 using Microsoft.AspNetCore.Components.Web;
+using AppDaTa.ViewModels;
 
 namespace AppAPI.Controllers
 {
@@ -39,9 +40,29 @@ namespace AppAPI.Controllers
 		}
 
 		[HttpGet("[action]")]
-		public IEnumerable<HoaDon> GetAllHoaDons()
+		public IEnumerable<HoaDonViewModels> GetAllHoaDons()
 		{
-			return irepos.GetAll().OrderByDescending(c => c.NgayTao);
+			var lsthd = from a in irepos.GetAll()
+						join b in ireposvoucher.GetAll() on a.IDVoucher equals b.IDVoucher
+						join c in ireposuser.GetAll() on a.IDKhachHang equals c.IDUser
+						select new HoaDonViewModels
+						{
+							IdBill = a.IdBill,
+							NameKhachHang = c.TenKhachHang,
+							GiatriVH = b.GiaTriVoucher,
+							MaHD = a.MaHD,
+							SoLuong = a.SoLuong,
+							ThanhTien = a.ThanhTien,
+							TongThanhToan = a.TongThanhToan,
+							NgayNhan = a.NgayNhan,
+							NgayShip = a.NgayShip,
+							NgayTao = a.NgayTao,
+							TenNguoiNhan = a.TenNguoiNhan,
+							SDTNguoiNhan = a.SDTNguoiNhan,
+							DiaChiNguoiNhan = a.DiaChiNguoiNhan,
+							TrangThai = a.TrangThai
+						};
+			return lsthd.ToList();
 		}
 		[HttpGet("[action]")]
 		public HoaDon GetHoaDons(Guid id)
@@ -107,7 +128,41 @@ namespace AppAPI.Controllers
 				updatehoadon.DiaChiNguoiNhan = hoadon.DiaChiNguoiNhan;
 				updatehoadon.TrangThai = hoadon.TrangThai;
 				irepos.UpdateItem(updatehoadon);
-				return true;
+
+				var HDCT = ireposhdct.GetAll().First(c => c.IDHD == updatehoadon.IdBill);
+				foreach (var item in ireposhdct.GetAll())
+				{
+					SanPhamChiTiet updatesspct = IreposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == HDCT.IDSPCT);
+					var soluong = updatesspct.SoLuong - item.SoLuong;
+					if (updatesspct.IDSPCT == item.IDSPCT)
+					{
+						updatesspct.IDSPCT = updatesspct.IDSPCT;
+						updatesspct.IDMau = updatesspct.IDMau;
+						updatesspct.IDSP = updatesspct.IDSP;
+						updatesspct.IDSale = updatesspct.IDSale;
+						updatesspct.IDSize = updatesspct.IDSize;
+						updatesspct.IDHang = updatesspct.IDHang;
+						updatesspct.IDTheLoai = updatesspct.IDTheLoai;
+						updatesspct.Anh = updatesspct.Anh;
+						updatesspct.GiaBan = updatesspct.GiaBan;
+						updatesspct.GiaSale = updatesspct.GiaSale;
+						updatesspct.MoTa = updatesspct.MoTa;
+						if (soluong > 0)
+						{
+							updatesspct.SoLuong = soluong;
+							updatesspct.TrangThai = updatesspct.TrangThai;
+						}
+						else
+						{
+							updatesspct.SoLuong = 0;
+							updatesspct.TrangThai = 0;
+						}
+						IreposSPCT.UpdateItem(updatesspct);
+					}
+				}
+					
+
+					return true;
 			}
 			else
 			{
@@ -143,7 +198,6 @@ namespace AppAPI.Controllers
 				hoadon.TrangThai = 1;
 			}
 			return irepos.UpdateItem(hoadon);
-
 		}
 		[HttpPut("{Update-HoaDon}")]
 		public bool UpdateHoadon(Guid idhoadon, Guid idvoucher, string tennguoinhan, string sdt, string dc)
@@ -169,38 +223,6 @@ namespace AppAPI.Controllers
 				hoadon.DiaChiNguoiNhan = dc;
 				hoadon.TrangThai = 1;
 				irepos.UpdateItem(hoadon);
-
-				foreach (var item in ireposhdct.GetAll())
-				{
-					SanPhamChiTiet updatesspct = IreposSPCT.GetAll().FirstOrDefault(c => c.IDSPCT == HDCT.IDSPCT);
-					var soluong = updatesspct.SoLuong - item.SoLuong;
-					if (updatesspct.IDSPCT == item.IDSPCT)
-					{
-						updatesspct.IDSPCT = updatesspct.IDSPCT;
-						updatesspct.IDMau = updatesspct.IDMau;
-						updatesspct.IDSP = updatesspct.IDSP;
-						updatesspct.IDSale = updatesspct.IDSale;
-						updatesspct.IDSize = updatesspct.IDSize;
-						updatesspct.IDHang = updatesspct.IDHang;
-						updatesspct.IDTheLoai = updatesspct.IDTheLoai;
-						updatesspct.Anh = updatesspct.Anh;
-						updatesspct.GiaBan = updatesspct.GiaBan;
-						updatesspct.GiaSale = updatesspct.GiaSale;
-						updatesspct.MoTa = updatesspct.MoTa;
-						if (soluong > 0)
-						{
-							updatesspct.SoLuong = updatesspct.SoLuong - item.SoLuong;
-							updatesspct.TrangThai = updatesspct.TrangThai;
-						}
-						else
-						{
-							updatesspct.SoLuong = 0;
-							updatesspct.TrangThai = 0;
-						}
-
-					}
-					IreposSPCT.UpdateItem(updatesspct);
-				}
 				return true;
 			}
 			else

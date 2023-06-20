@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "EditBill";
 	var voucher = ViewBag.lstvocher;
+	var giatri = ViewBag.Giatri;
 }
 
 <h1>EditBill</h1>
@@ -76,11 +77,10 @@
 			</div>
 			<div class="form-group row">
 				<div class="col-5">
-					<label asp-for="IDVoucher" class="control-label"></label>
+					<label>Voucher giảm giá : </label>
 				</div>
 				<div class="col-7">
-					@Html.DropDownList("IDVoucher", ViewBag.voucher as IEnumerable<SelectListItem>, "", null)
-					@Html.ValidationMessageFor(model => model.IDVoucher, "", new { @class = "text-danger" })
+					@giatri %
 
 					@*Mở forrm Vocher*@
 					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
@@ -170,7 +170,7 @@
 														@item.TrangThai
 													</td>
 													<td>
-														<a asp-action="ApDungVoucher">Sử Dụng Vocher</a>
+														<a href="@Url.Action("ApDungVoucher", "Account", new { IdBill = Model.IdBill, IDVoucher = item.IDVoucher})">Áp Dụng Voucher</a>
 													</td>
 												</tr>
 											}
